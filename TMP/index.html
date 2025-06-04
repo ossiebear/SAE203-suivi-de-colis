@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Fournisseur - Colis</title>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Welcome to your Dashboard</h1>
+        <div class="container">
+            <div class="add-items">
+                <form action="EnregistrerColi.php" method="post">
+                    <input type="text" placeholder="Add new item" name="newItem"/>
+                    <input type="number" placeholder="Enter quantity" name="quantity"/>
+                    <input type="text" placeholder="Enter a destination address" name="destinationAddress"/>
+                    <input type="date" placeholder="Enter delivery date" name="deliveryDate"/>
+                    <input type="text" placeholder="Name of the client" name="clientName"/>
+                    <input type="text" placeholder="firstname of the client" name="clientFirstname"/>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+            <div class="list-items">
+
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
