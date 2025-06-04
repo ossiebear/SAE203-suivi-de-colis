@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Postal Simulator</title>
+        <!-- Main stylesheet for layout and styling -->
+        <link rel="stylesheet" href="../CSS/CreateEntry.css">
+        <!-- Leaflet CSS for map rendering -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <!-- Preconnect for Google Fonts to improve loading performance -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- Google Fonts: Inter family for clean, modern typography -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+        <!-- Favicon for browser tab -->
+        <link rel="icon" type="image/png" href="../IMG/icon.png">
+    </head>
+
+
+
+    
+    <body>
+        <div class="main-container">
+            <!-- Header section with logo and title -->
+            <div class="header">
+                <img src="../IMG/icon.png" alt="Postal Route Simulator Logo" class="icon">
+                <h1>Experimental Postal Route Simulator</h1>
+                <img src="../IMG/icon.png" alt="Postal Route Simulator Logo" class="icon">
+            </div>
+
+            <!-- Input group for start and destination with buttons -->
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label for="start">Start:</label>
+                    <input type="text" id="start" name="start" autocomplete="off">
+                </div>
+                <div class="input-wrapper">
+                    <label for="destination">Destination:</label>
+                    <input type="text" id="destination" name="destination" autocomplete="off">
+                </div>
+                <button id="generate-path-btn">Simulate</button>
+                <!-- <button id="toggle-csv">Debug: Show Top 20 Sites</button>  debug line-->
+            </div>
+
+            <!-- Container for path info and map display -->
+            <div id="container">
+                <div id="path-area">
+                    <!-- Button to save the current path to the database -->
+                    <button id="save-path-btn">Save Path to DB</button>
+                </div>
+                <div id="map-area">
+                    <!-- Map container where Leaflet map will be rendered -->
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer with version info -->
+        <footer>
+        </footer>
+
+        <!-- Leaflet JS library for interactive maps -->
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <!-- Custom JavaScript for autocomplete functionality -->
+        <script src="../JS/autocomplete/autocomplete.js"></script>
+
+        <!-- Custom JavaScript for map rendering and simulation -->
+        <script src="../JS/map/map-ini.js"></script>
+        <script src="../JS/map/map-fetchData-CreateEntry.js"></script>
+        <script src="../JS/map/map-render.js"></script> 
+
+
+    
+        <!-- Custom JavaScript for saving path data to the database -->
+        <script src="../JS/DB/savePathToDB.js"></script>    
+    </body>
+</html>

@@ -1,0 +1,10 @@
+<?php
+// non-.gitignored template for DB connection
+$DB_HOST = '1.2.3.4';
+$DB_PORT = 5432;
+$DB_NAME = '';
+$DB_USER = '';
+$DB_PASSWORD = '';
+
+//remove the '.template' part to use
+
