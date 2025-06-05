@@ -1,17 +1,13 @@
-Changed the style and content of the parcel journey timeline.
-Changed CSS styling
-Added Index page and a new query page
+2025-06-05
+TLDR: Migration from CSV to PostgresDB
 
-
-problem: cannot test new input page because queryentry.html is calling map.js for map functionality
-execept that it therefore reads code that only createEntry.html needs.
-
-split map.js into multiple files so i can pick which functions to use for each page
-added JS subfolders since we have so many now
-
-
-now need to handle a datagrab from the tracking box. pass to a php script that searches the database for that tracking code.
-it will return a list of offices it flows through. We either write a script that searches the csv foro the full data line off of this ID
-or we just save the full data lines to the DB (better)
-
+- Migrated autocomplete backend from CSV to PostgreSQL database (table: post_offices).
+- Improved search logic: prioritizes matches at the start of any field, then secondary matches.
+- Limited search columns for performance and relevance.
+- Added input length validation and error handling for robustness and security.
+- Migrated CreatePath.php to use the database instead of CSV for node lookups.
+- Optimized CreatePath.php to only fetch required nodes (start, finish, parents, roots) for each journey, greatly improving performance.
+- Updated frontend and backend to use associative arrays for journey data.
+- Added and then removed backend timing logs for performance analysis.
+- Cleaned up and fully commented CreatePath.php for maintainability.
 

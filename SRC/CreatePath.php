@@ -4,43 +4,57 @@
 // AI usage: many functions copied from old project, written manually (SAE105), translated with help from AI
 //           comments/docstrings written by AI. GPT4.1-mini
 
-// Load the postal data CSV file into an array of rows.
-// Each row is parsed as an array of fields using str_getcsv.
-// The file path is relative to the parent directory of the current script.
-$csv = array_map('str_getcsv', file(dirname(__DIR__) . '/DATA/LOCAL/postaldata.csv'));
+// This script builds a journey path between two post office nodes using the database.
+// It only loads the nodes needed for the journey (start, finish, their parents, and root nodes).
 
-// Remove the first row which is assumed to be the header row.
-array_shift($csv);
-
-// Build an associative lookup array indexed by node ID (first column of each row).
-// This allows quick access to any node's data by its ID.
-$byId = [];
-foreach ($csv as $row) {
-    $byId[$row[0]] = $row;
-}
-
-// Load the root nodes CSV file similarly, parsing each row.
-// Root nodes represent key reference points in the data.
-$rootNodes = array_map('str_getcsv', file(dirname(__DIR__) . '/DATA/LOCAL/root_nodes.csv'));
-
-// Extract the IDs of the root nodes (first column of each root node row).
-$rootIds = array_column($rootNodes, 0);
+require_once dirname(__DIR__) . '/DATA/DATABASE/FUNCTIONS/db_connections.php';
+$pdo = db_connect();
 
 // Retrieve the start and finish node IDs from GET or POST parameters.
-// These represent the extremities of the journey to be calculated.
 $startId = $_GET['start'] ?? $_POST['start'] ?? null;
 $finishId = $_GET['finish'] ?? $_POST['finish'] ?? null;
 
-// If either start or finish ID is missing, return an error as JSON and exit.
+// Validate input.
 if (!$startId || !$finishId) {
     echo json_encode(['error' => 'Missing start or finish']);
     exit;
 }
 
+// Build the list of needed node IDs: start, finish, their parents, and all root nodes.
+$neededIds = [$startId, $finishId];
+$rootNodes = array_map('str_getcsv', file(dirname(__DIR__) . '/DATA/LOCAL/root_nodes.csv'));
+$rootIds = array_column($rootNodes, 0);
+$neededIds = array_unique(array_merge($neededIds, $rootIds));
+
+// Helper to fetch parent ID for a node from the database.
+function getParentId($nodeId, $pdo) {
+    $stmt = $pdo->prepare('SELECT site_acores_de_rattachement FROM post_offices WHERE identifiant_a = ?');
+    $stmt->execute([$nodeId]);
+    $parentId = $stmt->fetchColumn();
+    return $parentId ?: null;
+}
+
+// Add parents of start and finish (1 level up).
+foreach ([$startId, $finishId] as $id) {
+    $parentId = getParentId($id, $pdo);
+    if ($parentId) $neededIds[] = $parentId;
+}
+$neededIds = array_unique($neededIds);
+
+// Fetch only the needed nodes from the database.
+$in = str_repeat('?,', count($neededIds) - 1) . '?';
+$stmt = $pdo->prepare("SELECT * FROM post_offices WHERE identifiant_a IN ($in)");
+$stmt->execute($neededIds);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Build associative lookup array indexed by identifiant_a.
+$byId = [];
+foreach ($rows as $row) {
+    $byId[$row['identifiant_a']] = $row;
+}
+
 /**
- * Calculate the great-circle distance between two latitude/longitude points
- * using the Haversine formula.
- *
+ * Calculate the great-circle distance between two latitude/longitude points using the Haversine formula.
  * @param float $lat1 Latitude of point 1 in degrees
  * @param float $lon1 Longitude of point 1 in degrees
  * @param float $lat2 Latitude of point 2 in degrees
@@ -48,7 +62,7 @@ if (!$startId || !$finishId) {
  * @return float Distance in kilometers
  */
 function haversine($lat1, $lon1, $lat2, $lon2) {
-    $R = 6371; // Earth radius in kilometers
+    $R = 6371;
     $dLat = deg2rad($lat2 - $lat1);
     $dLon = deg2rad($lon2 - $lon1);
     $a = sin($dLat/2) ** 2 +
@@ -60,21 +74,18 @@ function haversine($lat1, $lon1, $lat2, $lon2) {
 
 /**
  * Find the parent node of a given node by its ID.
- * The parent ID is assumed to be in column index 3 of the node's data row.
- *
  * @param string $nodeId The node ID to find the parent for
  * @param array $byId Associative array of nodes indexed by ID
  * @return array|null The parent node row or null if not found
  */
 function findParent($nodeId, $byId) {
     if (!isset($byId[$nodeId])) return null;
-    $parentId = $byId[$nodeId][3] ?? null;
+    $parentId = $byId[$nodeId]['site_acores_de_rattachement'] ?? null;
     return ($parentId && isset($byId[$parentId])) ? $byId[$parentId] : null;
 }
 
 /**
  * Find the closest root node to a given node based on geographic distance.
- *
  * @param array|null $node The node to find closest root for
  * @param array $rootIds Array of root node IDs
  * @param array $byId Associative array of nodes indexed by ID
@@ -82,17 +93,16 @@ function findParent($nodeId, $byId) {
  */
 function findClosestRoot($node, $rootIds, $byId) {
     if (!$node) return null;
-    $lat1 = $node[11];
-    $lon1 = $node[12];
+    $lat1 = $node['latitude'];
+    $lon1 = $node['longitude'];
     if (!is_numeric($lat1) || !is_numeric($lon1)) return null;
-
     $closestRoot = null;
     $minDist = PHP_INT_MAX;
     foreach ($rootIds as $rootId) {
         if (!isset($byId[$rootId])) continue;
         $root = $byId[$rootId];
-        $lat2 = $root[11];
-        $lon2 = $root[12];
+        $lat2 = $root['latitude'];
+        $lon2 = $root['longitude'];
         if (!is_numeric($lat2) || !is_numeric($lon2)) continue;
         $dist = haversine($lat1, $lon1, $lat2, $lon2);
         if ($dist < $minDist) {
@@ -105,8 +115,6 @@ function findClosestRoot($node, $rootIds, $byId) {
 
 /**
  * Find a common root node closest to the midpoint between two root nodes.
- * This helps identify a shared reference point for a journey between two nodes.
- *
  * @param array|null $rootA First root node
  * @param array|null $rootB Second root node
  * @param array $rootIds Array of root node IDs
@@ -115,16 +123,15 @@ function findClosestRoot($node, $rootIds, $byId) {
  */
 function findCommonRoot($rootA, $rootB, $rootIds, $byId) {
     if (!$rootA || !$rootB) return null;
-    $midLat = ($rootA[11] + $rootB[11]) / 2;
-    $midLon = ($rootA[12] + $rootB[12]) / 2;
-
+    $midLat = ($rootA['latitude'] + $rootB['latitude']) / 2;
+    $midLon = ($rootA['longitude'] + $rootB['longitude']) / 2;
     $closestRoot = null;
     $minDist = PHP_INT_MAX;
     foreach ($rootIds as $rootId) {
         if (!isset($byId[$rootId])) continue;
         $root = $byId[$rootId];
-        $lat = $root[11];
-        $lon = $root[12];
+        $lat = $root['latitude'];
+        $lon = $root['longitude'];
         if (!is_numeric($lat) || !is_numeric($lon)) continue;
         $dist = haversine($midLat, $midLon, $lat, $lon);
         if ($dist < $minDist) {
@@ -137,8 +144,6 @@ function findCommonRoot($rootA, $rootB, $rootIds, $byId) {
 
 /**
  * Build a path from an extremity node up to its parent and then to the closest root node.
- * The path is an array of nodes representing this route.
- *
  * @param string $extremityId The starting node ID
  * @param array $byId Associative array of nodes indexed by ID
  * @param array $rootIds Array of root node IDs
@@ -146,33 +151,24 @@ function findCommonRoot($rootA, $rootB, $rootIds, $byId) {
  */
 function buildPathToRoot($extremityId, $byId, $rootIds) {
     if (!isset($byId[$extremityId])) return [];
-
     $path = [];
     $extremity = $byId[$extremityId];
     $path[] = $extremity;
-
-    // Find the parent node of the extremity
     $parent = findParent($extremityId, $byId);
     if ($parent) {
         $path[] = $parent;
     } else {
-        // If no parent found, fallback to using the extremity itself for root search
         $parent = $extremity;
     }
-
-    // Find the closest root node to the parent node
     $root = findClosestRoot($parent, $rootIds, $byId);
-    if ($root && $root[0] !== $parent[0]) {
+    if ($root && $root['identifiant_a'] !== $parent['identifiant_a']) {
         $path[] = $root;
     }
-
     return $path;
 }
 
 /**
  * Build the full journey path from start to finish nodes via a common root node.
- * The journey includes the start path, common root, finish root, and finish path.
- *
  * @param string $startId Start node ID
  * @param string $finishId Finish node ID
  * @param array $byId Associative array of nodes indexed by ID
@@ -180,47 +176,43 @@ function buildPathToRoot($extremityId, $byId, $rootIds) {
  * @return array The full journey as an array of node rows
  */
 function buildFullJourney($startId, $finishId, $byId, $rootIds) {
-    // Build paths from start and finish nodes to their respective roots
     $startPath = buildPathToRoot($startId, $byId, $rootIds);
     $finishPath = buildPathToRoot($finishId, $byId, $rootIds);
-
-    // Identify the root nodes at the end of each path
     $startRoot = end($startPath);
     $finishRoot = end($finishPath);
-
-    // Find a common root node closest to the midpoint between the two roots
     $commonRoot = findCommonRoot($startRoot, $finishRoot, $rootIds, $byId);
-
     $journey = [];
-
-    // Add all nodes from the start path
     foreach ($startPath as $node) {
         $journey[] = $node;
     }
-
-    // Add the common root node if it is distinct from the start root
-    if ($commonRoot && $commonRoot[0] !== $startRoot[0]) {
+    if ($commonRoot && $commonRoot['identifiant_a'] !== $startRoot['identifiant_a']) {
         $journey[] = $commonRoot;
     }
-
-    // Add the finish root node if it is distinct from the common root
-    if ($finishRoot && $finishRoot[0] !== $commonRoot[0]) {
+    if ($finishRoot && $finishRoot['identifiant_a'] !== $commonRoot['identifiant_a']) {
         $journey[] = $finishRoot;
     }
-
-    // Add the finish path nodes in reverse order, excluding roots already added
     $finishPathReversed = array_reverse($finishPath);
     foreach ($finishPathReversed as $node) {
-        if ($node[0] !== $finishRoot[0] && $node[0] !== $commonRoot[0]) {
+        if ($node['identifiant_a'] !== $finishRoot['identifiant_a'] && $node['identifiant_a'] !== $commonRoot['identifiant_a']) {
             $journey[] = $node;
         }
     }
-
     return $journey;
 }
 
 // Build the journey from the provided start and finish node IDs.
 $journey = buildFullJourney($startId, $finishId, $byId, $rootIds);
-
-// Output the journey as a JSON object with a 'journey' key.
+if (!is_array($journey)) {
+    $journey = [];
+}
+// Filter out nodes with invalid or missing latitude/longitude before output and re-index
+$journey = array_values(array_filter($journey, function($node) {
+    if (!isset($node['latitude'], $node['longitude'])) return false;
+    $lat = $node['latitude'];
+    $lon = $node['longitude'];
+    return is_numeric($lat) && is_numeric($lon)
+        && $lat !== '' && $lon !== ''
+        && $lat >= -90 && $lat <= 90
+        && $lon >= -180 && $lon <= 180;
+}));
 echo json_encode(['journey' => $journey]);

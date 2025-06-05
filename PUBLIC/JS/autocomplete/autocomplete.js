@@ -52,7 +52,7 @@ function setupAutocomplete(inputId) {
 
         // Fetch autocomplete suggestions from the server-side endpoint.
         // The endpoint is assumed to be '../../SRC/autocomplete.php'.
-        fetch('../../SRC/autocomplete.php?q=' + encodeURIComponent(val))
+        fetch('../../SRC/autocomplete.php?query=' + encodeURIComponent(val))
             .then(r => r.json()) // Parse the response as JSON.
             .then(data => {
                 list.innerHTML = ''; // Clear any existing suggestions.

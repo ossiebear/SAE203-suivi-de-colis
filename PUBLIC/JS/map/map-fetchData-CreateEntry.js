@@ -32,9 +32,11 @@ document.getElementById('generate-path-btn').addEventListener('click', function(
 
     // Give CreatePath.php the start and finish IDs. The result is returned and rendered
     console.log("Asking CreatePath.php for path for start=", startId, "and finish=", finishId);
+    console.time('fetchCreatePath');
     fetch(`../../SRC/CreatePath.php?start=${encodeURIComponent(startId)}&finish=${encodeURIComponent(finishId)}`)
         .then(r => r.json())
         .then(data => {
+            console.timeEnd('fetchCreatePath');
             console.log("CreatePath replied with journey: ", data);
             // Validate the returned journey data.
             if (!data.journey || !Array.isArray(data.journey) || data.journey.length === 0) {
@@ -44,7 +46,7 @@ document.getElementById('generate-path-btn').addEventListener('click', function(
 
             // Helper function to extract latitude and longitude from a data row.
             function extractLatLong(row) {
-                return [parseFloat(row[11]), parseFloat(row[12])];
+                return [parseFloat(row['latitude']), parseFloat(row['longitude'])];
             }
 
             // Create a polyline representing the full journey and add it to the map.
@@ -78,7 +80,7 @@ document.getElementById('generate-path-btn').addEventListener('click', function(
                         shadowSize: [41, 41]
                     })
                 }).addTo(map)
-                .bindPopup(`<b>Step ${i + 1}</b><br>${row[1]}`);
+                .bindPopup(`<b>Step ${i + 1}</b><br>${row['libelle_du_site']}`);
 
                 // Store the marker for later removal.
                 markers.push(marker);
