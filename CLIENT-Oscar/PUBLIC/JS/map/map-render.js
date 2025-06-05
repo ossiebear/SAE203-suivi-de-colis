@@ -27,8 +27,8 @@ function renderPathInfo(journey) {
             <div class="timeline-step">
                 <span class="timeline-circle"></span>
                 <div class="timeline-content">
-                    <b>${label}</b> ${row[1]}, <span style="color:#9c9c9c;">${row[2]}</span><br>
-                    <span class="timeline-subtitle">${row[7]}, ${row[4]} ${row[8]}</span> 
+                    <b>${label}</b> ${row['libelle_du_site']}, <span style="color:#9c9c9c;">${row['caracteristique_du_site']}</span><br>
+                    <span class="timeline-subtitle">${row['code_postal']}, ${row['adresse']} ${row['localite']}</span> 
                 </div>
             </div>
             `;

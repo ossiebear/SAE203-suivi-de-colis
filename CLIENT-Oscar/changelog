@@ -1,0 +1,13 @@
+2025-06-05
+TLDR: Migration from CSV to PostgresDB
+
+- Migrated autocomplete backend from CSV to PostgreSQL database (table: post_offices).
+- Improved search logic: prioritizes matches at the start of any field, then secondary matches.
+- Limited search columns for performance and relevance.
+- Added input length validation and error handling for robustness and security.
+- Migrated CreatePath.php to use the database instead of CSV for node lookups.
+- Optimized CreatePath.php to only fetch required nodes (start, finish, parents, roots) for each journey, greatly improving performance.
+- Updated frontend and backend to use associative arrays for journey data.
+- Added and then removed backend timing logs for performance analysis.
+- Cleaned up and fully commented CreatePath.php for maintainability.
+
