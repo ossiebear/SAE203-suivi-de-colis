@@ -1,6 +1,6 @@
 // Oscar Collins 2025
 // SAE203 groupe A2
-// AI usage: Written manually, AI help for transforming GET request system to POST.
+// AI usage: Written manually
 //           comments written by AI. GPT4.1-mini
 
 // BUTTON FOR SAVE PATH TO DB------------------------------------------------------
@@ -28,34 +28,31 @@ document.getElementById('save-path-btn').addEventListener('click', () => {
         return;
     }
 
-    // Fetch the journey path from the server by calling CreatePath.php via POST with start and finish IDs.
-    console.log("Asking CreatePath.php for path for start=", start, "and finish=", destination);
-    fetch('../../SRC/CreatePath.php', {
-        method: 'POST',
+    // Fetch the journey path from the server by calling CreatePath.php via GET with start and finish IDs.
+    console.log("Asking CreatePath.php for path for start=", start[0], "and finish=", destination[0]);
+    fetch(`../../SRC/CreatePath.php?start=${encodeURIComponent(start[0])}&finish=${encodeURIComponent(destination[0])}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        // Send start and finish IDs as URL-encoded form data.
-        body: `start=${encodeURIComponent(start[0])}&finish=${encodeURIComponent(destination[0])}`
+        }
     })
     .then(response => response.json()) // Parse the response as JSON.
     .then(data => {
-        // Extract the journey node IDs from the response and send them to savePathToDB.php via POST.
+        console.log('CreatePath.php replied with path:', data);
+        // Extract the journey node IDs from the response and send them to savePathToDB.php via GET.
         console.log('Asking SavePathToDB.php to save calculated path to database'); 
-        console.warn(data.journey)
-        return fetch('../../SRC/savePathToDB.php', {
-            method: 'POST',
+        return fetch(`../../SRC/savePathToDB.php?pathData=${encodeURIComponent(JSON.stringify(data.results.journey.map(item => item.identifiant_a)))}`,
+        {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // Encode the journey node IDs as a JSON string and send as 'pathData' parameter.
-            body: `pathData=${encodeURIComponent(JSON.stringify(data.journey.map(item => item[0])))}`
+            }
         });
     })
     .then(response => response.json()) // Read the response json from the savePathToDB.php call.
     .then(response => {
         console.log('Path saved to database successfully (assumed)');
-        console.log('Server replied with tracking code:', response);
+        console.log('Server replied:', response);
 
         // Get the parent container where to add the tracking code element
         const pathArea = document.getElementById('path-area');
@@ -63,15 +60,27 @@ document.getElementById('save-path-btn').addEventListener('click', () => {
         // Check if tracking code element already exists
         let trackingCodeElement = document.getElementById('tracking-code');
 
-        if (trackingCodeElement) {
+        if (response.success) {
             // If it exists, update the content
-            trackingCodeElement.innerText = "Tracking code: " + response;
+            if (trackingCodeElement) {
+                trackingCodeElement.innerText = "Tracking code: " + response.results;
+            } else {
+                // If it doesn't exist, create a new <p> element with id 'tracking-code'
+                trackingCodeElement = document.createElement('p');
+                trackingCodeElement.id = 'tracking-code';
+                trackingCodeElement.innerText = "Tracking code: " + response.results;
+                pathArea.appendChild(trackingCodeElement);
+            }
         } else {
-            // If it doesn't exist, create a new <p> element with id 'tracking-code'
-            trackingCodeElement = document.createElement('p');
-            trackingCodeElement.id = 'tracking-code';
-            trackingCodeElement.innerText = "Tracking code: " + response;
-            pathArea.appendChild(trackingCodeElement);
+            // Show error message
+            if (trackingCodeElement) {
+                trackingCodeElement.innerText = "Error: " + response.error;
+            } else {
+                trackingCodeElement = document.createElement('p');
+                trackingCodeElement.id = 'tracking-code';
+                trackingCodeElement.innerText = "Error: " + response.error;
+                pathArea.appendChild(trackingCodeElement);
+            }
         }
     })
     .catch(err => {

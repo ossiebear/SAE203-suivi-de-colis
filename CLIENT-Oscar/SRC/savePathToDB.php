@@ -11,21 +11,29 @@ include dirname(__DIR__) . '/DATA/DATABASE/FUNCTIONS/db_connections.php';
 // This ensures the client interprets the response correctly.
 header('Content-Type: application/json');
 
-// Check if 'pathData' is provided in the POST request.
+// Check if 'pathData' is provided in the GET request.
 // 'pathData' is expected to be a JSON string representing an array of path nodes.
-if (isset($_POST['pathData'])) {
+if (isset($_GET['pathData'])) {
     // Decode the JSON string into a PHP array.
-    $pathData = json_decode($_POST['pathData'], true);
+    $pathData = json_decode($_GET['pathData'], true);
 
     // Validate that decoding was successful and the result is an array.
     if (!is_array($pathData)) {
         // Return an error response if the format is invalid.
-        echo json_encode(['error' => 'Invalid pathData format']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Invalid pathData format',
+            'results' => null
+        ]);
         exit;
     }
 } else {
     // Return an error response if 'pathData' is missing from the request.
-    echo json_encode(['error' => 'Missing pathData']);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Missing pathData',
+        'results' => null
+    ]);
     exit;
 }
 
@@ -59,13 +67,25 @@ try {
 
     // Check if the insertion affected any rows (i.e., was successful).
     if ($query->rowCount() > 0) {
-        // Return a success response with only the generated tracking code.
-        echo json_encode($trackingCode);
+        // Return a success response with the generated tracking code.
+        echo json_encode([
+            'success' => true,
+            'error' => null,
+            'results' => $trackingCode
+        ]);
     } else {
         // Return an error if the insertion failed without an exception.
-        echo json_encode(['error' => 'Failed to save tracking code to the database']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Failed to save tracking code to the database',
+            'results' => null
+        ]);
     }
 } catch (Exception $e) {
     // Catch any exceptions (e.g., DB errors) and return the error message as JSON.
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode([
+        'success' => false,
+        'error' => $e->getMessage(),
+        'results' => null
+    ]);
 }

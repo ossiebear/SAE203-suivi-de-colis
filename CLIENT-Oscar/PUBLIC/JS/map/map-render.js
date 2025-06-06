@@ -1,59 +1,61 @@
-/**
- * Render the textual journey information in the UI.
- * Displays each step with labels for start, main hub, and destination.
- *
- * @param {Array} journey Array of journey nodes (rows).
- */
-function renderPathInfo(journey) {
-    console.log('Writing Step list')
-    const pathArea = document.getElementById('path-area');
-    const savePathBtn = document.getElementById('save-path-btn');
+// Arrays to store markers and polylines so they can be removed before new simulation.
+let markers = [];
+let polylines = [];
 
-    // Create a container div for the journey info.
-    const journeyInfo = document.createElement('div');
-    journeyInfo.style.marginTop = '20px'; // Add spacing above.
-
-    if (!journey || journey.length === 0) {
-        // Show error message if no journey data is available.
-        journeyInfo.innerHTML = '<div style="color:red;">No journey data available.</div>';
-    } else {
-        // Helper function to format each step's display.
-        function formatSite(row, stepNum, isStart, isCommonRoot, isDestination) {
-            let label = `Step ${stepNum}:`;
-            if (isStart) label += ' <span style="color:blue;">(Start)</span>';
-            if (isCommonRoot) label += ' <span style="color:violet;">(Main Hub)</span>';
-            if (isDestination) label += ' <span style="color:green;">(Destination)</span>';
-            return `
-            <div class="timeline-step">
-                <span class="timeline-circle"></span>
-                <div class="timeline-content">
-                    <b>${label}</b> ${row['libelle_du_site']}, <span style="color:#9c9c9c;">${row['caracteristique_du_site']}</span><br>
-                    <span class="timeline-subtitle">${row['code_postal']}, ${row['adresse']} ${row['localite']}</span> 
-                </div>
-            </div>
-            `;
-        }
-
-        // Calculate the index of the common root node (middle of the journey).
-        const commonRootIndex = Math.floor(journey.length / 2);
-
-        // Build the HTML for the journey timeline.
-        let html = '<h3>Parcel Journey</h3>';
-        html += '<div class="timeline">';
-        journey.forEach((row, i) => {
-            const isStart = i === 0;
-            const isCommonRoot = i === commonRootIndex;
-            const isDestination = i === journey.length - 1;
-            html += formatSite(row, i + 1, isStart, isCommonRoot, isDestination);
-        });
-        html += '</div>';
-
-        journeyInfo.innerHTML = html;
+function renderPathToMap(journey) {
+    // Remove existing markers and polylines from the map before rendering new ones
+    if (Array.isArray(markers)) {
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+    }
+    if (Array.isArray(polylines)) {
+        polylines.forEach(l => map.removeLayer(l));
+        polylines = [];
     }
 
-    // Clear existing content and append the journey info and save button.
-    pathArea.innerHTML = '';
-    pathArea.appendChild(journeyInfo);
-    pathArea.appendChild(savePathBtn);
-    console.log('done');
+    // Helper function to extract latitude and longitude from a data row.
+    function extractLatLong(row) {
+        return [parseFloat(row['latitude']), parseFloat(row['longitude'])];
+    }
+
+    console.log('Creating polyline for journey');
+    const journeyLatLngs = journey.map(extractLatLong);
+    const journeyLine = L.polyline(journeyLatLngs, {color: 'blue', weight: 4}).addTo(map);
+    polylines.push(journeyLine);
+
+    // Add markers for each node in the journey with color coding.
+    journey.forEach((row, i) => {
+        // Default marker color is red.
+        let markerColor = 'red';
+
+        // Start node marker is blue.
+        if (i === 0) markerColor = 'blue';
+
+        // Finish node marker is green.
+        else if (i === journey.length - 1) markerColor = 'green';
+
+        // Middle node (common root) marker is violet.
+        if (i === Math.floor(journey.length / 2)) markerColor = 'violet';
+
+        // Create a Leaflet marker with a colored icon.
+        const marker = L.marker(extractLatLong(row), {
+            icon: L.icon({
+                iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${markerColor}.png`,
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map)
+        .bindPopup(`<b>Step ${i + 1}</b><br>${row['libelle_du_site']}`);
+
+        // Store the marker for later removal.
+        markers.push(marker);
+    });
+
+    // Adjust the map view to fit all journey points.
+    map.fitBounds(L.latLngBounds(journeyLatLngs));
+    console.log('Path rendered to map successfully');
 }
+

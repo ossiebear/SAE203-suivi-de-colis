@@ -10,13 +10,17 @@
 require_once dirname(__DIR__) . '/DATA/DATABASE/FUNCTIONS/db_connections.php';
 $pdo = db_connect();
 
-// Retrieve the start and finish node IDs from GET or POST parameters.
-$startId = $_GET['start'] ?? $_POST['start'] ?? null;
-$finishId = $_GET['finish'] ?? $_POST['finish'] ?? null;
+// Retrieve the start and finish node IDs from GET parameters only.
+$startId = $_GET['start'] ?? null;
+$finishId = $_GET['finish'] ?? null;
 
 // Validate input.
 if (!$startId || !$finishId) {
-    echo json_encode(['error' => 'Missing start or finish']);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Missing start or finish',
+        'results' => null
+    ]);
     exit;
 }
 
@@ -215,4 +219,8 @@ $journey = array_values(array_filter($journey, function($node) {
         && $lat >= -90 && $lat <= 90
         && $lon >= -180 && $lon <= 180;
 }));
-echo json_encode(['journey' => $journey]);
+echo json_encode([
+    'success' => true,
+    'error' => null,
+    'results' => ['journey' => $journey]
+]);
