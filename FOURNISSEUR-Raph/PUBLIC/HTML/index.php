@@ -27,11 +27,11 @@
         <?php
         // Configuration et initialisation
         try {
-            require_once '../SRC/fonctionsConnexion.php';
-            require_once '../SRC/fonctionsBDD.php';
-            require_once '../SRC/fonctionSys.php';
+            require_once '../../SRC/fonctionsConnexion.php';
+            require_once '../../SRC/fonctionsBDD.php';
+            require_once '../../SRC/fonctionSys.php';
             
-            $conn1 = connexionBDD('../CONFIG/paramCon.php');
+            $conn1 = connexionBDD('../../DATA/config.php');
         } catch (Exception $e) {
             echo '<div class="error">Erreur de connexion : ' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</div>';
             exit;

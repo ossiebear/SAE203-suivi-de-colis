@@ -75,6 +75,24 @@ function EnregistreContenu($commande, $article, $quantite, $connex) {
   return $lire;
 }
 
+function filtreChaine($chaine) {
+  $chaine = trim($chaine); // Supprime les espaces inutiles
+  $chaine = stripslashes($chaine); // Supprime les antislashs
+  $chaine = htmlspecialchars($chaine, ENT_QUOTES, 'UTF-8'); // Échappe les caractères spéciaux
+  return $chaine;
+}
 
+function rechercheCommandesParNom($conn, $nomClient) {
+  $sql = "SELECT num_commande, nom_client, date_commande FROM commandes WHERE nom_client LIKE :nom";
+  $res = $conn->prepare($sql);
+  $res->execute([':nom' => "%$nomClient%"]);
+  return $res->fetchAll();
+}
+
+function toutesLesCommandes($conn) {
+  $sql = "SELECT num_commande, nom_client, date_commande FROM commandes";
+  $res = $conn->query($sql);
+  return $res->fetchAll();
+}
 
 ?>

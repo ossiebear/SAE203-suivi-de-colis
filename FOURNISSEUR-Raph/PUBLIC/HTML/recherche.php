@@ -1,9 +1,9 @@
 <?php
-    require_once '../SRC/fonctionsConnexion.php';
-    require_once '../SRC/fonctionsBDD.php';
-    require_once '../SRC/fonctionSys.php';
+    require_once '../../SRC/fonctionsConnexion.php';
+    require_once '../../SRC/fonctionsBDD.php';
+    require_once '../../SRC/fonctionSys.php';
 
-    $conn1 = connexionBDD('../CONFIG/paramCon.php');
+    $conn1 = connexionBDD('../../DATA/config.php');
 
     if (isset($_GET["name"])) {
         $nomClient = filtreChaine($_GET["name"]);
