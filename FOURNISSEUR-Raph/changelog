@@ -1,1 +1,12 @@
-Empty
+Raph
+
+Ajout de fichiers de base pour FOURNISSEUR HTML-PHP-CSS : 
+- styles-php.css pour la page index.php
+- EnregistrementColi.php (vide mais servira a ajouter des colis en dure)
+- recherche.php permet de trie ou non les colis par le nom du client
+
+Ajout d'un script JS:
+Le script JS a pour but de faire une recherche par nom des colis
+
+Exemple :
+    Si on recherche Raphael, tous les colis associés à ce nom seront affichés.
