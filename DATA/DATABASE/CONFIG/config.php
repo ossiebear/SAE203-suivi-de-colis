@@ -1,12 +1,11 @@
 <?php
 // Remember to .gitignore this file
-
 // Credentials and info for signing into srv-peda postgres server.
-$DB_HOST = '10.100.100.196'; //using IP instead of 'srv-peda-new' because i cant access school's DNS when working from home.
+$DB_HOST = '10.100.100.189'; //using IP instead of 'srv-peda-new' because i cant access school's DNS when working from home.
 $DB_PORT = 5432;
-$DB_NAME = 'collinso_SAE203';
-$DB_USER = 'collinso';
-$DB_PASSWORD = 'axPHPqrs0750!';
+$DB_NAME = 'rta2';
+$DB_USER = 'rta2';
+$DB_PASSWORD = 'Maurice';
 
 
 /* Expected DB strucuture:
