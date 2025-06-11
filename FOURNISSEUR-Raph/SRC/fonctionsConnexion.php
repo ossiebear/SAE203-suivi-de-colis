@@ -1,4 +1,5 @@
 <?php
+include $fichierParametre;
 function connexionBDD($fichierParametre) {
 /*---------------------------------------------
 Création de la connexion à la base de données
