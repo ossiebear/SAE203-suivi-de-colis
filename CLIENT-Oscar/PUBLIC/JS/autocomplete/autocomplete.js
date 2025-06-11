@@ -66,7 +66,8 @@ function setupAutocomplete(inputId) {
                 // Populate the dropdown list with suggestions from the data.
                 data.forEach(item => {
                     // Create a display string from the item's data (city and state).
-                    const display = item[1] + ', ' + item[7];
+                    // With new schema: name (city), postal_code (postal code)
+                    const display = item[3] + ', ' + item[5];
 
                     // Create a list item for each suggestion.
                     const li = document.createElement('li');

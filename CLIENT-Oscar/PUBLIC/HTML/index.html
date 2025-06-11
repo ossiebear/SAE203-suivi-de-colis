@@ -1,22 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../CSS/index.css">
-        <title>Home screen</title>
-    </head>
-
-
-    <body>
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; gap: 20px;">
-            <a href="CreateEntry.html"><button class="button">Create Entry</button></a>
-            <a href="QueryEntry.html"><button class="button">Query Entry</button></a>
-    </body>
-
-    <footer>
-        <p class="version">version alpha-7</p>
-    </footer>
-
-
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Poste - Accueil</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="icon" type="image/png" href="../IMG/redboot_small.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="lp-header">
+        <div class="lp-header-top">
+            <div class="lp-header-center">
+                <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
+                <h1 class="lp-title">Redboot</h1>
+            </div>
+            
+            <div class="lp-header-actions">
+                <!-- Dark Mode Toggle -->
+                <div class="dark-mode-toggle">
+                    <span class="dark-mode-label">☀️</span>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="dark-mode-label">🌙</span>
+                </div>
+                
+                <!-- Site Selection Dropdown -->
+                <div class="lp-site-select">
+                    <span>Vous êtes? : </span>
+                    <button class="lp-dropdown" onclick="toggleSiteModal()">
+                        <span>Client</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    
+                    <!-- Site Selection Modal -->
+                    <div id="siteModal" class="site-modal" onclick="closeSiteModal()">
+                        <div class="site-modal-content" onclick="event.stopPropagation()">
+                            <div class="site-options">
+                                <div class="site-option selected" onclick="selectSite('client')">
+                                    <div class="site-icon">👤</div>
+                                    <h3>Client</h3>
+                                    <div class="checkmark">✓</div>
+                                </div>
+                                <div class="site-option" onclick="selectSite('magasin')">
+                                    <div class="site-icon">🏪</div>
+                                    <h3>Magasin</h3>
+                                </div>
+                                <div class="site-option" onclick="selectSite('livreur')">
+                                    <div class="site-icon">🚚</div>
+                                    <h3>Livreur</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login Button -->
+                <div class="lp-login-container">
+                    <button class="lp-btn lp-btn-icon" title="Se connecter">👤</button>
+                    <span class="lp-login-text">SE CONNECTER</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="lp-nav">
+            <ul>
+                <li>Le courrier</li>
+                <li>Le colis</li>
+                <li>Le transfert de courrier</li>
+                <li>Les services</li>
+                <li>Tous nos produits</li>
+                <li class="lp-nav-mobile">Téléphonie mobile</li>
+            </ul>
+            <div class="lp-mail">
+                <a href="mailto:contact@redboot.duck">📧contact@redboot.duck</a>
+            </div>
+        </nav>    </header>
+    
+    <main>
+        <!-- Promotional Cards Section -->
+        <section class="lp-promos">
+            <div class="lp-promo">
+                <h3>LIVRAISON EXPRESS 24H</h3>
+                <p>Besoin d'envoyer un colis en urgence ? Notre service express garantit une livraison en 24h partout en France métropolitaine.</p>
+                <a href="#">Commander maintenant →</a>
+                <img src="../IMG/fast_mail.png" alt="Livraison Express" class="lp-promo-img">
+            </div>
+            <div class="lp-promo">
+                <h3>SUIVI EN TEMPS RÉEL</h3>
+                <p>Suivez vos colis en temps réel.<br> Recevez des notifications à chaque <br>étape de la livraison.</p>
+                <a href="#">Découvrir le service →</a>
+                <img src="../IMG/redboot_magnifying glass.png" alt="Suivi GPS" class="lp-promo-img">
+            </div>
+            <div class="lp-promo">
+                <h3>ÉCOLOGIQUE & RESPONSABLE</h3>
+                <p>Nos véhicules électriques et nos emballages recyclables réduisent votre empreinte <br>carbone. Livraison verte garantie.</p>
+                <a href="#">En savoir plus →</a>
+                <img src="../IMG/leaf.png" alt="Livraison Écologique" class="lp-promo-img">
+            </div>
+        </section>
+        
+        <!-- Package Tracking Section -->
+        <section class="lp-track">
+            <h2>Suivre un courrier ou un colis :</h2>
+            <div class="lp-track-form">
+                <input type="text" placeholder="Renseignez votre ou vos numéros de suivi">
+                <button>Suivre votre envoi</button>
+            </div>
+            <div class="lp-track-actions">
+                <div>
+                    <img src="../IMG/post-office.png" alt="Trouver bureau de poste">
+                    <span>Trouver votre bureau de poste</span>
+                </div>
+                <div>
+                    <img src="../IMG/mailbox.png" alt="Changer adresse">
+                    <span>Changer l'adresse de livraison</span>
+                </div>
+                <div>
+                    <img src="../IMG/clock.png" alt="Changer date">
+                    <span>Changer la date de livraison</span>
+                </div>
+                <div>
+                    <img src="../IMG/support.png" alt="Support client">
+                    <span>Contacter le service client</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- External JavaScript -->
+    <script src="../JS/index.js"></script>
+</body>
 </html>

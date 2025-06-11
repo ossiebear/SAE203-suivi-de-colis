@@ -18,8 +18,8 @@ document.getElementById('generate-path-btn').addEventListener('click', function(
         return;
     }
     // Extract IDs from the selected data.
-    const startId = start[0];
-    const finishId = destination[0];
+    const startId = start[1];
+    const finishId = destination[1];
 
     // Fetch journey data from the server
     console.log("Asking CreatePath.php for path for start=", startId, "and finish=", finishId);

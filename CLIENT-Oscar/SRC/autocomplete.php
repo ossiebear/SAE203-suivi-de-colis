@@ -35,9 +35,8 @@ if ($query !== '') {
         $pdo = db_connect();
         // Columns to search (excluding latitude/longitude for text search compatibility)
         $columns = [
-            'identifiant_a', 'libelle_du_site', 
-            'adresse', 'complement_d_adresse', 'lieu_dit', 
-            'code_postal', 'localite'
+            'name', 'street_address', 'address_complement',
+            'locality', 'postal_code', 'city'
         ];
         // $fields_concat is unused but kept for reference if needed for display
         $fields_concat = "CONCAT_WS(' ', ".implode(',', $columns).")";

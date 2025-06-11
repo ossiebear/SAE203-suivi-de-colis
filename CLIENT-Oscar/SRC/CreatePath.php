@@ -32,7 +32,7 @@ $neededIds = array_unique(array_merge($neededIds, $rootIds));
 
 // Helper to fetch parent ID for a node from the database.
 function getParentId($nodeId, $pdo) {
-    $stmt = $pdo->prepare('SELECT site_acores_de_rattachement FROM post_offices WHERE identifiant_a = ?');
+    $stmt = $pdo->prepare('SELECT parent_office_acores_id FROM post_offices WHERE acores_id	 = ?');
     $stmt->execute([$nodeId]);
     $parentId = $stmt->fetchColumn();
     return $parentId ?: null;
@@ -47,14 +47,14 @@ $neededIds = array_unique($neededIds);
 
 // Fetch only the needed nodes from the database.
 $in = str_repeat('?,', count($neededIds) - 1) . '?';
-$stmt = $pdo->prepare("SELECT * FROM post_offices WHERE identifiant_a IN ($in)");
+$stmt = $pdo->prepare("SELECT * FROM post_offices WHERE acores_id IN ($in)");
 $stmt->execute($neededIds);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Build associative lookup array indexed by identifiant_a.
 $byId = [];
 foreach ($rows as $row) {
-    $byId[$row['identifiant_a']] = $row;
+    $byId[$row['acores_id']] = $row;
 }
 
 /**
@@ -84,7 +84,7 @@ function haversine($lat1, $lon1, $lat2, $lon2) {
  */
 function findParent($nodeId, $byId) {
     if (!isset($byId[$nodeId])) return null;
-    $parentId = $byId[$nodeId]['site_acores_de_rattachement'] ?? null;
+    $parentId = $byId[$nodeId]['parent_office_acores_id'] ?? null;
     return ($parentId && isset($byId[$parentId])) ? $byId[$parentId] : null;
 }
 
@@ -165,7 +165,7 @@ function buildPathToRoot($extremityId, $byId, $rootIds) {
         $parent = $extremity;
     }
     $root = findClosestRoot($parent, $rootIds, $byId);
-    if ($root && $root['identifiant_a'] !== $parent['identifiant_a']) {
+    if ($root && $root['acores_id'] !== $parent['acores_id']) {
         $path[] = $root;
     }
     return $path;
@@ -189,15 +189,15 @@ function buildFullJourney($startId, $finishId, $byId, $rootIds) {
     foreach ($startPath as $node) {
         $journey[] = $node;
     }
-    if ($commonRoot && $commonRoot['identifiant_a'] !== $startRoot['identifiant_a']) {
+    if ($commonRoot && $commonRoot['acores_id'] !== $startRoot['acores_id']) {
         $journey[] = $commonRoot;
     }
-    if ($finishRoot && $finishRoot['identifiant_a'] !== $commonRoot['identifiant_a']) {
+    if ($finishRoot && $finishRoot['acores_id'] !== $commonRoot['acores_id']) {
         $journey[] = $finishRoot;
     }
     $finishPathReversed = array_reverse($finishPath);
     foreach ($finishPathReversed as $node) {
-        if ($node['identifiant_a'] !== $finishRoot['identifiant_a'] && $node['identifiant_a'] !== $commonRoot['identifiant_a']) {
+        if ($node['acores_id'] !== $finishRoot['acores_id'] && $node['acores_id'] !== $commonRoot['acores_id']) {
             $journey[] = $node;
         }
     }
