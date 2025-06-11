@@ -23,7 +23,8 @@ h1 {
     margin-bottom: 30px;
     text-align: center;
 }
-.search-form input[type="text"] {
+.search-form input[type="text"], 
+.search-form input[type="password"] {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
