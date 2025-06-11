@@ -1,5 +1,6 @@
 Raph
 
-Correction des chemins d'acces au ressource
-
-Ajout des fonctions de recherche par client 
+Amélioration de l'injectionColi
+Qui peux maintenent ajouter des clients.
+Modification et ajout de EnregistrementColi et EnregistrementClient
+Mais PAS TESTER CAR PAS DE BASE DE DONNEE IL FAUT AUSSI LE CHANGER AVEC LES TRUCS CHIANT DU PROF

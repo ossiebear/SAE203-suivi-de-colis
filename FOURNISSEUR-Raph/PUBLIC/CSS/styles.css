@@ -1,94 +1,82 @@
+/* styles.css */
+
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #f0f4f8 0%, #e0e7ef 100%);
     margin: 0;
-    padding: 50px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 0;
     min-height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
-    flex-direction: column;
-    color: #ecf0f1;
 }
-
+  
 h1 {
-    margin-bottom: 40px;
+    text-align: center;
+    color: #2d3a4b;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    letter-spacing: 1px;
 }
-
+  
 .container {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+    padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    max-width: 480px;
-    width: 100%;
+    gap: 1.5rem;
 }
-
-form {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 35px 45px;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    max-width: 480px;
-    width: 100%;
+  
+.add-items form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: box-shadow 0.3s ease;
+    gap: 1rem;
 }
-
-form:hover {
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-}
-
+  
 input[type="text"],
 input[type="number"],
 input[type="date"] {
-    padding: 14px 20px;
-    font-size: 16px;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #ecf0f1;
-    font-weight: 600;
-    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1);
+    padding: 0.8rem 1rem;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #f7fafc;
+    transition: border 0.2s;
 }
-
-input[type="text"]::placeholder,
-input[type="number"]::placeholder,
-input[type="date"]::placeholder {
-    color: #bdc3c7;
-    font-weight: 400;
-}
-
+  
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="date"]:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 12px #3498db, inset 0 0 10px rgba(52, 152, 219, 0.5);
-    background-color: rgba(255, 255, 255, 0.25);
+    border: 1.5px solid #4f8cff;
+    outline: none;
+    background: #fff;
 }
-
+  
 button[type="submit"] {
-    background: linear-gradient(45deg, #3498db, #2980b9);
-    color: white;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 16px 0;
+    background: linear-gradient(90deg, #4f8cff 0%, #1e90ff 100%);
+    color: #fff;
     border: none;
-    border-radius: 14px;
+    border-radius: 8px;
+    padding: 0.9rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.7);
-    transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
 }
-
+  
 button[type="submit"]:hover {
-    background: linear-gradient(45deg, #2980b9, #3498db);
-    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.7);
-    transform: scale(1.05);
+    background: linear-gradient(90deg, #1e90ff 0%, #4f8cff 100%);
+}
+  
+@media (max-width: 600px) {
+    .container {
+      max-width: 95vw;
+      padding: 1.2rem 0.5rem;
+    }
+    h1 {
+      font-size: 1.3rem;
+    }
 }

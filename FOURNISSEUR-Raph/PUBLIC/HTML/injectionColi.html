@@ -1,27 +1,48 @@
-<html>
-    <head>
-        <title>Fournisseur - Colis</title>
-        <link rel="stylesheet" href="../CSS/styles.css">
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <h1>Welcome to your Dashboard</h1>
-        <div class="container">
-            <div class="add-items">
-                <form action="../../SRC/EnregistrerColi.php" method="post">
-                    <input type="text" placeholder="Add new item" name="newItem"/>
-                    <input type="number" placeholder="Enter quantity" name="quantity"/>
-                    <input type="text" placeholder="Enter a destination address" name="destinationAddress"/>
-                    <input type="date" placeholder="Enter delivery date" name="deliveryDate"/>
-                    <input type="text" placeholder="Name of the client" name="clientName"/>
-                    <input type="text" placeholder="firstname of the client" name="clientFirstname"/>
-                    <button type="submit">Add</button>
-                </form>
-            </div>
-            <div class="list-items">
-
-            </div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Enregistrement Client & Colis</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Création d'un Client</h1>
+    <div class="container">
+        <div class="add-items">
+            <form action="../../SRC/EnregistrerClient.php" method="post" autocomplete="off">
+                <label for="clientName">Nom du client</label>
+                <input type="text" id="clientName" name="clientName" placeholder="Entrez le nom" required />
+                <label for="clientFirstname">Prénom du client</label>
+                <input type="text" id="clientFirstname" name="clientFirstname" placeholder="Entrez le prénom" required />
+                <label for="destinationAddress">Adresse de livraison</label>
+                <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Entrez l'adresse" required />
+                <label for="deliveryDate">Date de livraison</label>
+                <input type="date" id="deliveryDate" name="deliveryDate" required />
+                <button type="submit">Enregistrer le client</button>
+            </form>
         </div>
-        <script src="../JS/script.js"></script>
-    </body>
+    </div>
+
+    <h1>Création d'un Colis</h1>
+    <div class="container">
+        <div class="add-items">
+            <form action="../../SRC/EnregistrerColi.php" method="post" autocomplete="off">
+                <label for="newItem">Nom de l'article</label>
+                <input type="text" id="newItem" name="newItem" placeholder="Nom de l'article" required />
+                <label for="quantity">Quantité</label>
+                <input type="number" id="quantity" name="quantity" placeholder="Quantité" min="1" required />
+                <label for="destinationAddressColi">Adresse de livraison</label>
+                <input type="text" id="destinationAddressColi" name="destinationAddress" placeholder="Adresse de livraison" required />
+                <label for="deliveryDateColi">Date de livraison</label>
+                <input type="date" id="deliveryDateColi" name="deliveryDate" required />
+                <label for="clientNameColi">Nom du client</label>
+                <input type="text" id="clientNameColi" name="clientName" placeholder="Nom du client" required />
+                <label for="clientFirstnameColi">Prénom du client</label>
+                <input type="text" id="clientFirstnameColi" name="clientFirstname" placeholder="Prénom du client" required />
+                <button type="submit">Enregistrer le colis</button>
+            </form>
+        </div>
+    </div>
+</body>
 </html>
