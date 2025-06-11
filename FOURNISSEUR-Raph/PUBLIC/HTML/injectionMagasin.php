@@ -1,7 +1,7 @@
 <?php 
 require_once '../../SRC/fonctionsConnexion.php';
 require_once '../../SRC/fonctionsBDD.php';
-require_once '../../../DATA/config.php';
+require_once '../../../DATA/DATABASE/CONFIG/config.php';
 
 $conn=connexionBDD('../../DATA/config.php');
 ?>
