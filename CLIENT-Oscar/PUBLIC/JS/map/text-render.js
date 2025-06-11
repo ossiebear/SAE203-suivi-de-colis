@@ -22,8 +22,8 @@ function renderPathToText(journey) {
             <div class="timeline-step">
                 <span class="timeline-circle"></span>
                 <div class="timeline-content">
-                    <b>${label}</b> ${row['libelle_du_site']}, <span style="color:#9c9c9c;">${row['caracteristique_du_site']}</span><br>
-                    <span class="timeline-subtitle">${row['code_postal']}, ${row['adresse']} ${row['localite']}</span> 
+                    <b>${label}</b> ${row['name']}, <span style="color:#9c9c9c;">${row['site_type']}</span><br>
+                    <span class="timeline-subtitle">${row['postal_code']}, ${row['street_address']} ${row['city']}</span> 
                 </div>
             </div>
             `;

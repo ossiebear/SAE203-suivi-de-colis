@@ -1,20 +1,637 @@
+
+/* ================================
+   CSS VARIABLES & THEME SETUP
+   ================================ */
+
+/* Light Theme Variables */
+:root {
+    --bg-primary: #f7f8fa;
+    --bg-secondary: #fff;
+    --text-primary: #222;
+    --text-secondary: #666;
+    --border-color: #ddd;
+    --border-light: #ececec;
+    --shadow: rgba(0,0,0,0.04);
+    --shadow-modal: rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444;
+    --border-light: #333;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-modal: rgba(0, 0, 0, 0.5);
+}
+
+/* ================================
+   BASE STYLES & LAYOUT
+   ================================ */
+
+/* Top color bar */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #c00000;
+    z-index: 9999;
+}
+
 body {
-    background-color: #293241;
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+    padding-top: 4px;
 }
 
 
-.button {
-    background-color: #ee6c4d;
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
-    font-size: 32px;
+/* ================================
+   HEADER SECTION
+   ================================ */
+
+.lp-header {
+    background: var(--bg-secondary);
+    box-shadow: 0 2px 8px var(--shadow);
+    padding-bottom: 0.5rem;
+    position: relative;
+}
+
+.lp-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem 2rem;
+    background: var(--bg-secondary);
+    position: relative;
+}
+
+.lp-logo {
+    height: 50px;
+    margin-right: 1rem;
+}
+
+.lp-header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.lp-title {
+    font-family: 'ADLaM Display', cursive;
+    font-size: 3rem;
+    font-weight: 400;
+    color: #c00000;
+    text-align: center;
+    margin: 0;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    display: block;
+}
+
+.lp-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ================================
+   DARK MODE TOGGLE
+   ================================ */
+
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dark-mode-label {
+    font-size: 1rem;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
     cursor: pointer;
-    transition: background-color 0.5s ease, translate 0.5s ease; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 25px;
 }
 
-.button:hover {
-    background-color: #cc5803;    
-    translate: 0 -2px;
-}   
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(25px);
+}
+
+/* Dark mode toggle styling */
+[data-theme="dark"] .slider {
+    background-color: #555;
+}
+
+[data-theme="dark"] input:checked + .slider {
+    background-color: #4CAF50;
+}
+/* ================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ================================ */
+
+.lp-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    color: var(--text-primary);
+}
+
+.lp-btn:hover {
+    background: var(--bg-primary);
+    border-color: var(--text-secondary);
+}
+
+.lp-btn-grid {
+    background: var(--bg-primary);
+}
+
+.lp-btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    padding: 0;
+}
+
+
+/* ================================
+   LOGIN & USER SECTION
+   ================================ */
+
+.lp-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    margin: 0.2rem;
+    margin-left: 3rem;
+}
+
+.lp-login-text {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1;
+}
+
+.lp-mail {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-left: 1rem;
+}
+
+.lp-mail a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ================================
+   SITE SELECTION & DROPDOWN
+   ================================ */
+
+.lp-site-select {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.lp-dropdown {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+/* ================================
+   SITE SELECTION MODAL
+   ================================ */
+
+.site-modal {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    z-index: 1000;
+}
+
+.site-modal.show {
+    display: block;
+}
+
+.site-modal.show::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.site-modal-content {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 500px;
+    box-shadow: 0 4px 15px var(--shadow-modal);
+    border: 1px solid var(--border-color);
+}
+
+.site-options {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.site-option {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    background: var(--bg-secondary);
+    flex: 1;
+    min-width: 120px;
+}
+
+.site-option:hover {
+    border-color: #0066cc;
+    background: var(--bg-primary);
+}
+
+.site-option.selected {
+    border-color: #0066cc;
+    background: #2c3e50;
+}
+
+.site-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.site-option h3 {
+    margin: 0.3rem 0 0 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.checkmark {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #0066cc;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+/* ================================
+   NAVIGATION
+   ================================ */
+
+.lp-nav {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.lp-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.lp-nav li {
+    padding: 1rem 0.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: border 0.2s, color 0.2s;
+}
+
+.lp-nav li.lp-nav-mobile {
+    color: #c6007e;
+}
+
+.lp-nav li:hover {
+    border-bottom: 2px solid #f7c600;
+    color: #c6007e;
+}
+
+.lp-mail {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding: 1rem 0;
+}
+
+.lp-mail a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ================================
+   PROMOTIONAL CARDS SECTION
+   ================================ */
+
+.lp-promos {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem auto 1.5rem auto;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+.lp-promo {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    padding: 1.5rem 1rem 1rem 1.5rem;
+    flex: 1 1 0;
+    min-width: 260px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.lp-promo.yellow {
+    background: #f7c600;
+    color: #222;
+}
+
+.lp-promo h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.lp-promo p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.lp-promo a {
+    color: #c6007e;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.lp-promo-img {
+    width: 80px;
+    height: auto;
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    opacity: 0.4;
+}
+
+/* Make second card image bigger */
+.lp-promo:nth-child(2) .lp-promo-img {
+    width: 100px;
+}
+
+/* ================================
+   TRACKING SECTION
+   ================================ */
+
+.lp-track {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    padding: 2rem 2rem 1.5rem 2rem;
+    text-align: center;
+}
+
+.lp-track h2 {
+    color: #1a3578;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.lp-track-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.lp-track-form input {
+    width: 400px;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.lp-track-form button {
+    background: #f7c600;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.lp-track-form button:hover {
+    background: #ffe066;
+}
+
+.lp-track-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.lp-track-actions div {
+    flex: 1 1 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    min-width: 120px;
+}
+
+.lp-track-actions img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.5rem;
+}
+
+.lp-track-actions span {
+    font-size: 0.98rem;
+    color: #1a3578;
+    font-weight: 700;
+    text-align: center;
+}
+
+
+/* ================================
+   DARK MODE SPECIFIC IMPROVEMENTS
+   ================================ */
+
+/* Dark mode input placeholders */
+[data-theme="dark"] input::placeholder {
+    color: #888;
+}
+
+/* Dark mode button improvements */
+[data-theme="dark"] .lp-btn-icon {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+/* Dark mode promo card images */
+[data-theme="dark"] .lp-promo:nth-child(1) .lp-promo-img {
+    filter: invert(1);
+}
+
+/* Dark mode track section improvements */
+[data-theme="dark"] .lp-track h2 {
+    color: #d95d39;
+}
+
+[data-theme="dark"] .lp-track-actions img {
+    filter: invert(1) brightness(0.9);
+}
+
+[data-theme="dark"] .lp-track-actions span {
+    color: #a04122;
+}
+/* ================================
+   RESPONSIVE DESIGN & MEDIA QUERIES
+   ================================ */
+
+@media (max-width: 900px) {
+    .lp-promos {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .lp-track-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .lp-header-top, 
+    .lp-nav ul, 
+    .lp-promos, 
+    .lp-track {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .lp-track-form input {
+        width: 100%;
+    }
+    
+    .lp-track-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
