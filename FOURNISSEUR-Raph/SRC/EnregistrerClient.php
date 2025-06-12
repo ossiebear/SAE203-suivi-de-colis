@@ -15,7 +15,7 @@ $destinationAddress = $_POST["destinationAddress"];
 
 try {
     // Insérer le client d'abord
-    $idClient = enregistreClient($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient $passwordEncryptClient ,$destinationAddress, $conn);
+    $idClient = enregistreClient($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient, $passwordEncryptClient ,$destinationAddress, $conn);
     if ($idClient) {
         echo'<h1>Client enregistré avec succès</h1>';
         echo'<p>ID du client est ' . $idClient . '</p>';

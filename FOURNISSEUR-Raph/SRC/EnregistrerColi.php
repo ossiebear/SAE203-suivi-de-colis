@@ -15,7 +15,7 @@ $destinationAddress = $_POST["destinationAddress"];
 
 try {
     // Insérer le client d'abord
-    $idMagasin = enregistreMagasin($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient $passwordEncryptClient ,$destinationAddress, $conn);
+    $idMagasin = enregistreMagasin($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient, $passwordEncryptClient ,$destinationAddress, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';
