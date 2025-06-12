@@ -15,12 +15,15 @@ $destinationAddress = $_POST["destinationAddress"];
 
 try {
     // Insérer le client d'abord
-    $idMagasin = enregistreMagasin($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient $passwordEncryptClient ,$destinationAddress, date('Y-m-d'), $conn);
+    $idMagasin = enregistreMagasin($clientName, $clientFirstname, $emailAddressClient, $phoneNumberClient $passwordEncryptClient ,$destinationAddress, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';
     }
 
+} catch (Exception $e) {
+    echo '<h1>Erreur lors de l\'enregistrement</h1>';
+    echo '<p>' . $e->getMessage() . '</p>';
 }
 
 deconnexionBDD($conn);
