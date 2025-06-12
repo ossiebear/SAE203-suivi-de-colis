@@ -121,7 +121,7 @@ $packages = GetPackages($conn, $clientId);
                             <td><?php echo htmlspecialchars($package['weight_kg']); ?></td>
                             <td><?php echo htmlspecialchars($package['dimensions_cm']); ?></td>
                             <td><code><?php echo htmlspecialchars($package['tracking_number']); ?></code></td>
-                            <td><?php echo htmlspecialchars($package['onpackage_sender_address']); ?></td>
+                            <td><?php echo htmlspecialchars($package['onpackage_destination_address']); ?></td>
                             <td><?php echo $package['actual_delivery_date'] ? htmlspecialchars($package['actual_delivery_date']) : '-'; ?></td>
                             <td><?php echo htmlspecialchars($package['created_at']); ?></td>
                         </tr>
