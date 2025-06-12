@@ -48,8 +48,31 @@ function listerGerants($conn) {
     return $res;
 }
 
-function ListerClients($connex) {
-    $sql = "SELECT * FROM CLIENTS";
-    $res = $connex->query($sql);
-    return $res->fetchAll();
+function ListerClients($conn) {
+    // Requête pour récupérer tous les clients pour le menu déroulant
+    $sqlClients = "SELECT id, first_name, last_name FROM clients ORDER BY last_name, first_name";
+    $res = $conn->prepare($sqlClients);
+    $res->execute();
+    $clients = $res->fetchAll();
+    return $clients;
 }
+
+function GetPackages($conn, $clientId = 0) {    
+    // Requête pour récupérer les colis (tous ou filtrés par client)
+    if ($clientId > 0) {
+        // Colis d'un client spécifique
+        $sql = "SELECT p.*, c.last_name, c.first_name FROM packages p JOIN clients c ON p.recipient_client_id = c.id WHERE p.recipient_client_id = :recipient_client_id ORDER BY p.package_creation_date DESC";
+        $res = $conn->prepare($sql);
+        $res->execute([':recipient_client_id' => $clientId]);
+    } else {
+        // Tous les colis
+        $sql = "SELECT p.*, c.last_name, c.first_name FROM packages p JOIN clients c ON p.recipient_client_id = c.id ORDER BY p.package_creation_date DESC";
+        $res = $conn->prepare($sql);
+        $res->execute();
+    }
+    $packages = $res->fetchAll();
+    return $packages;
+}
+
+
+?>

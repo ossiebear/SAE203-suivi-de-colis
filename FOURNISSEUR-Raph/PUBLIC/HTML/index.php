@@ -5,36 +5,10 @@ require_once '../../../DATA/DATABASE/CONFIG/config.php';
 
 $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 
-// Récupération du filtre client (optionnel)
+// Récupération de l'id pour le filtre client si un id a ete selectionné 
 $clientId = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
-
-// Requête pour récupérer tous les clients pour le menu déroulant
-$sqlClients = "SELECT id, first_name, last_name FROM clients ORDER BY last_name, first_name";
-$stmtClients = $conn->prepare($sqlClients);
-$stmtClients->execute();
-$clients = $stmtClients->fetchAll();
-
-// Requête pour récupérer les colis (tous ou filtrés par client)
-if ($clientId > 0) {
-    // Colis d'un client spécifique
-    $sql = "SELECT p.*, c.last_name, c.first_name 
-            FROM packages p 
-            JOIN clients c ON p.client_id = c.id 
-            WHERE p.client_id = :client_id 
-            ORDER BY p.package_creation_date DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([':client_id' => $clientId]);
-} else {
-    // Tous les colis
-    $sql = "SELECT p.*, c.last_name, c.first_name 
-            FROM packages p 
-            JOIN clients c ON p.client_id = c.id 
-            ORDER BY p.package_creation_date DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-}
-
-$packages = $stmt->fetchAll();
+$clients = ListerClients($conn);
+$packages = GetPackages($conn, $clientId);
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +29,7 @@ $packages = $stmt->fetchAll();
             <form method="GET" action="">
                 <select name="client_id" onchange="this.form.submit()">
                     <option value="0">-- Tous les clients --</option>
+                    
                     <?php foreach ($clients as $client): ?>
                         <option value="<?php echo $client['id']; ?>" 
                                 <?php echo ($clientId == $client['id']) ? 'selected' : ''; ?>>
@@ -63,6 +38,7 @@ $packages = $stmt->fetchAll();
                     <?php endforeach; ?>
                 </select>
                 <button type="submit">Filtrer</button>
+                
                 <?php if ($clientId > 0): ?>
                     <a href="?client_id=0" style="text-decoration: none;">
                         <button type="button">Réinitialiser</button>
