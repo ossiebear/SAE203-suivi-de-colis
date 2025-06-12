@@ -15,7 +15,7 @@ $destinationAddress = $_POST["destinationAddress"];
 
 try {
     // Insérer le client d'abord
-    $idOwner = enregistreClient($ownerName, $ownerFirstname, $emailAddressClient, $phoneNumberClient, $passwordEncryptClient ,$destinationAddress, $conn);
+    $idOwner = enregistreMagasinOwner($ownerName, $ownerFirstname, $emailAddressClient, $phoneNumberClient, $passwordEncryptClient ,$destinationAddress, $conn);
     if ($idOwner) {
         echo'<h1>Gérant enregistré avec succès</h1>';
         echo'<p>ID du Gérant est ' . $idOwner . '</p>';
