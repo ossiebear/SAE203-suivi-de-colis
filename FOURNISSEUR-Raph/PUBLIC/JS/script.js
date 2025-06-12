@@ -1,13 +1,9 @@
-document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var nomClient = document.getElementById('name').value;
-
-    fetch('recherche.php?name=' + encodeURIComponent(nomClient))
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('searchResults').innerHTML = data;
-        })
-        .catch(error => {
-            document.getElementById('searchResults').innerHTML = '<div class="error">Erreur : ' + error + '</div>';
+// Auto-submit du formulaire quand on change la sélection
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.querySelector('select[name="client_id"]');
+    if (select) {
+        select.addEventListener('change', function() {
+            this.form.submit();
         });
+    }
 });
