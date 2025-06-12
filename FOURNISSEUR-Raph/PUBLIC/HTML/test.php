@@ -1,4 +1,10 @@
 <?php
+require_once '../../SRC/fonctionsConnexion.php';
+require_once '../../SRC/fonctionsBDD.php';
+require_once '../../../DATA/DATABASE/CONFIG/config.php';
+
+$conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
+
 
 // Récupération de l'ID client (par exemple via GET)
 $clientId = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
