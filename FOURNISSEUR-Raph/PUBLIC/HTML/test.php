@@ -9,15 +9,15 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 $clientId = isset($_GET['client_id']) ? intval($_GET['client_id']) : 0;
 
 // Requête pour récupérer tous les clients pour le menu déroulant
-$sqlClients = "SELECT id, client_name, client_firstname FROM clients ORDER BY client_name, client_firstname";
+$sqlClients = "SELECT (id, first_name, last_name) FROM clients ORDER BY last_name, first_name";
 $stmtClients = $conn->prepare($sqlClients);
 $stmtClients->execute();
-$clients = $stmtClients->fetchAll(PDO::FETCH_ASSOC);
+$clients = $stmtClients->fetchAll();
 
 // Requête pour récupérer les colis (tous ou filtrés par client)
 if ($clientId > 0) {
     // Colis d'un client spécifique
-    $sql = "SELECT p.*, c.client_name, c.client_firstname 
+    $sql = "SELECT p.*, c.last_name, c.first_name 
             FROM packages p 
             JOIN clients c ON p.client_id = c.id 
             WHERE p.client_id = :client_id 
@@ -26,7 +26,7 @@ if ($clientId > 0) {
     $stmt->execute([':client_id' => $clientId]);
 } else {
     // Tous les colis
-    $sql = "SELECT p.*, c.client_name, c.client_firstname 
+    $sql = "SELECT p.*, c.last_name, c.first_name 
             FROM packages p 
             JOIN clients c ON p.client_id = c.id 
             ORDER BY p.package_creation_date DESC";
@@ -34,7 +34,7 @@ if ($clientId > 0) {
     $stmt->execute();
 }
 
-$packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$packages = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -43,75 +43,7 @@ $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des colis</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .filter-section {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        select, button {
-            padding: 8px 12px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        .stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            flex: 1;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="styles-listeClient.css">
 </head>
 <body>
     <div class="container">
@@ -126,7 +58,7 @@ $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($clients as $client): ?>
                         <option value="<?php echo $client['id']; ?>" 
                                 <?php echo ($clientId == $client['id']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($client['client_name'] . ' ' . $client['client_firstname']); ?>
+                            <?php echo htmlspecialchars($client['last_name'] . ' ' . $client['first_name']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -159,7 +91,7 @@ $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         });
                         if (!empty($selectedClient)) {
                             $client = reset($selectedClient);
-                            echo htmlspecialchars($client['client_name'] . ' ' . $client['client_firstname']);
+                            echo htmlspecialchars($client['last_name'] . ' ' . $client['first_name']);
                         }
                         ?>
                     </strong></p>
@@ -193,7 +125,7 @@ $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($package['id']); ?></td>
                             <td>
-                                <strong><?php echo htmlspecialchars($package['client_name'] . ' ' . $package['client_firstname']); ?></strong>
+                                <strong><?php echo htmlspecialchars($package['last_name'] . ' ' . $package['first_name']); ?></strong>
                             </td>
                             <td>
                                 <span style="padding: 3px 8px; border-radius: 3px; font-size: 12px; 
