@@ -29,13 +29,14 @@ $packages = GetPackages($conn, $clientId);
             <form method="GET" action="">
                 <select name="client_id" onchange="this.form.submit()">
                     <option value="0">-- Tous les clients --</option>
-                    
+
                     <?php foreach ($clients as $client): ?>
                         <option value="<?php echo $client['id']; ?>" 
                                 <?php echo ($clientId == $client['id']) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($client['last_name'] . ' ' . $client['first_name']); ?>
                         </option>
                     <?php endforeach; ?>
+
                 </select>
                 <button type="submit">Filtrer</button>
                 
@@ -44,6 +45,7 @@ $packages = GetPackages($conn, $clientId);
                         <button type="button">Réinitialiser</button>
                     </a>
                 <?php endif; ?>
+                
             </form>
         </div>
 
@@ -116,12 +118,12 @@ $packages = GetPackages($conn, $clientId);
                                     <?php echo htmlspecialchars($package['package_status']); ?>
                                 </span>
                             </td>
-                            <td><?php echo htmlspecialchars($package['package_weight']); ?></td>
-                            <td><?php echo htmlspecialchars($package['package_size']); ?></td>
-                            <td><code><?php echo htmlspecialchars($package['package_tracking_number']); ?></code></td>
-                            <td><?php echo htmlspecialchars($package['package_delivery_address']); ?></td>
-                            <td><?php echo $package['package_delivery_date'] ? htmlspecialchars($package['package_delivery_date']) : '-'; ?></td>
-                            <td><?php echo htmlspecialchars($package['package_creation_date']); ?></td>
+                            <td><?php echo htmlspecialchars($package['weight_kg']); ?></td>
+                            <td><?php echo htmlspecialchars($package['dimensions_cm']); ?></td>
+                            <td><code><?php echo htmlspecialchars($package['tracking_number']); ?></code></td>
+                            <td><?php echo htmlspecialchars($package['onpackage_sender_address']); ?></td>
+                            <td><?php echo $package['actual_delivery_date'] ? htmlspecialchars($package['actual_delivery_date']) : '-'; ?></td>
+                            <td><?php echo htmlspecialchars($package['created_at']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

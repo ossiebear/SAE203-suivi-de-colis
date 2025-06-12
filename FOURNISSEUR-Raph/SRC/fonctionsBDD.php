@@ -61,18 +61,17 @@ function GetPackages($conn, $clientId = 0) {
     // Requête pour récupérer les colis (tous ou filtrés par client)
     if ($clientId > 0) {
         // Colis d'un client spécifique
-        $sql = "SELECT p.*, c.last_name, c.first_name FROM packages p JOIN clients c ON p.recipient_client_id = c.id WHERE p.recipient_client_id = :recipient_client_id ORDER BY p.package_creation_date DESC";
+        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name as package_status FROM packages p JOIN clients c ON p.recipient_client_id = c.id JOIN package_statuses ps ON p.current_status_id = ps.id WHERE p.recipient_client_id = :recipient_client_id ORDER BY p.created_at DESC";
         $res = $conn->prepare($sql);
         $res->execute([':recipient_client_id' => $clientId]);
     } else {
         // Tous les colis
-        $sql = "SELECT p.*, c.last_name, c.first_name FROM packages p JOIN clients c ON p.recipient_client_id = c.id ORDER BY p.package_creation_date DESC";
+        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name as package_status FROM packages p JOIN clients c ON p.recipient_client_id = c.id JOIN package_statuses ps ON p.current_status_id = ps.id ORDER BY p.created_at DESC";
         $res = $conn->prepare($sql);
         $res->execute();
     }
     $packages = $res->fetchAll();
     return $packages;
 }
-
 
 ?>
