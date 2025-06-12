@@ -26,7 +26,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
     <h1>Création d'un Directeur de Magasin</h1>
     <div class="container">
         <div class="add-items">
-            <form action="../../SRC/EnregistrerMagasin.php" method="post" autocomplete="off">
+            <form action="../../SRC/EnregistrerMagasinOwner.php" method="post" autocomplete="off">
                 <label for="shopName">Nom du Gérant du Magasin</label>
                 <input type="text" id="shopName" name="shopName" placeholder="Entrez le nom" required />
                 <label for="shopFirstname">Prénom du Gérant du Magasin</label>
