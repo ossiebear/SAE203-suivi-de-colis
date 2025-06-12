@@ -52,7 +52,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                 <input type="text" id="shopName2" name="shopName" placeholder="Entrez le nom du magasin" required />
                 
                 <?php
-                $resultat = listerGerants($conn1);
+                $resultat = listerGerants($conn);
                 $resuTab = $resultat->fetchAll();
 
                 // pour voir le contenu de resuTab (à décommenter pour execution) :
