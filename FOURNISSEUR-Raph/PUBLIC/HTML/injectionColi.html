@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Enregistrement Client & Colis</title>
+    <title>Enregistrement Colis</title>
     <link rel="stylesheet" href="../CSS/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -11,30 +11,37 @@
         <ul>
             <li><a href="injectionClient.html">Création Client</a></li>
             <li><a href="injectionOwner.html">Création Owner</a></li>
-            <li><a href="injectionColi.html">Création Colis</a></li>
+            <li><a href="injectionColi.html" class="active">Création Colis</a></li>
             <li><a href="injectionMagasin.php">Création Magasin</a></li>
+            <li><a href="index.php">Liste des Colis</a></li>
         </ul>
     </nav>
-
-    <h1>Création d'un Colis</h1>
     <div class="container">
+        <h1>Création d'un Colis</h1>
         <div class="add-items">
             <form action="../../SRC/EnregistrerColi.php" method="post" autocomplete="off">
-                <label for="newItem">Nom de l'article</label>
+                <label for="newItem">Nom de l'article *</label>
                 <input type="text" id="newItem" name="newItem" placeholder="Nom de l'article" required />
-                <label for="quantity">Quantité</label>
+                <label for="quantity">Quantité *</label>
                 <input type="number" id="quantity" name="quantity" placeholder="Quantité" min="1" required />
-                <label for="destinationAddressColi">Adresse de livraison</label>
-                <input type="text" id="destinationAddressColi" name="destinationAddress" placeholder="Adresse de livraison" required />
-                <label for="deliveryDateColi">Date de livraison</label>
-                <input type="date" id="deliveryDateColi" name="deliveryDate" required />
-                <label for="clientNameColi">Nom du client</label>
-                <input type="text" id="clientNameColi" name="clientName" placeholder="Nom du client" required />
-                <label for="clientFirstnameColi">Prénom du client</label>
-                <input type="text" id="clientFirstnameColi" name="clientFirstname" placeholder="Prénom du client" required />
+                <label for="destinationAddress">Adresse de livraison *</label>
+                <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Adresse complète de livraison" required />
+                <label for="deliveryDate">Date de livraison prévue *</label>
+                <input type="date" id="deliveryDate" name="deliveryDate" required />
+                <label for="clientName">Nom du client *</label>
+                <input type="text" id="clientName" name="clientName" placeholder="Nom de famille du client" required />
+                <label for="clientFirstname">Prénom du client *</label>
+                <input type="text" id="clientFirstname" name="clientFirstname" placeholder="Prénom du client" required />
                 <button type="submit">Enregistrer le colis</button>
             </form>
         </div>
+        <div style="margin-top: 20px; padding: 15px; background: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border-light);">
+            <h4 style="color: var(--text-primary); margin-top: 0;">ℹ️ Information</h4>
+            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                Si le client n'existe pas dans la base de données, il sera automatiquement créé avec les informations fournies.
+            </p>
+        </div>
     </div>
+    <script src="../JS/script.js"></script>
 </body>
 </html>
