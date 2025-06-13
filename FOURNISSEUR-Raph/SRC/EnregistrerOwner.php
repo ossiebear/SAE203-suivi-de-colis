@@ -14,7 +14,7 @@ $passwordEncryptOwner = $_POST["password"];
 
 try {
     // Insérer le client d'abord
-    $idOwner = enregistreClient($OwnerName, $OwnerFirstname, $emailAddressOwner, $phoneNumberOwner, $passwordEncryptOwner, $conn);
+    $idOwner = enregistreOwner($OwnerName, $OwnerFirstname, $emailAddressOwner, $phoneNumberOwner, $passwordEncryptOwner, $conn);
     if ($idOwner) {
         echo'<h1>Owner enregistré avec succès</h1>';
         echo'<p>ID du Owner est ' . $idOwner . '</p>';
