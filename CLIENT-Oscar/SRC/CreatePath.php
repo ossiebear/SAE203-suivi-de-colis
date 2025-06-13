@@ -10,9 +10,11 @@
 require_once dirname(__DIR__) . '/DATA/DATABASE/FUNCTIONS/db_connections.php';
 $pdo = db_connect();
 
-// Retrieve the start and finish node IDs from GET parameters only.
+// Retrieve the start and finish node IDs and their types from GET parameters.
 $startId = $_GET['start'] ?? null;
 $finishId = $_GET['finish'] ?? null;
+$startType = $_GET['start_type'] ?? 'office'; // Default to 'office' for backward compatibility
+$finishType = $_GET['finish_type'] ?? 'office'; // Default to 'office' for backward compatibility
 
 // Validate input.
 if (!$startId || !$finishId) {
@@ -24,22 +26,79 @@ if (!$startId || !$finishId) {
     exit;
 }
 
-// Build the list of needed node IDs: start, finish, their parents, and all root nodes.
-$neededIds = [$startId, $finishId];
-$rootNodes = array_map('str_getcsv', file(dirname(__DIR__) . '/DATA/LOCAL/root_nodes.csv'));
-$rootIds = array_column($rootNodes, 0);
-$neededIds = array_unique(array_merge($neededIds, $rootIds));
+// Validate types
+if (!in_array($startType, ['office', 'shop']) || !in_array($finishType, ['office', 'shop'])) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'Invalid start_type or finish_type. Must be "office" or "shop"',
+        'results' => null
+    ]);
+    exit;
+}
 
 // Helper to fetch parent ID for a node from the database.
 function getParentId($nodeId, $pdo) {
-    $stmt = $pdo->prepare('SELECT parent_office_acores_id FROM post_offices WHERE acores_id	 = ?');
+    $stmt = $pdo->prepare('SELECT parent_office_acores_id FROM post_offices WHERE acores_id = ?');
     $stmt->execute([$nodeId]);
     $parentId = $stmt->fetchColumn();
     return $parentId ?: null;
 }
 
+/**
+ * Get the ACORES ID for a shop by its database ID.
+ * This assumes shops will have a parent_office_acores_id field that points to their nearest post office.
+ * @param int $shopId The shop's database ID
+ * @param PDO $pdo Database connection
+ * @return string|null The ACORES ID of the shop's parent post office, or null if not found
+ */
+function getShopParentAcoresId($shopId, $pdo) {
+    // Using parent_office_acores_id to match the naming convention in post_offices table
+    $stmt = $pdo->prepare('SELECT parent_office_acores_id FROM shops WHERE id = ?');
+    $stmt->execute([$shopId]);
+    $parentAcoresId = $stmt->fetchColumn();
+    return $parentAcoresId ?: null;
+}
+
+/**
+ * Convert a shop or office identifier to a post office ACORES ID for path calculation.
+ * @param string $nodeId The node identifier (shop ID or office ACORES ID)
+ * @param string $nodeType The type of node ('shop' or 'office')
+ * @param PDO $pdo Database connection
+ * @return string|null The ACORES ID to use for path calculation
+ */
+function getPathNodeId($nodeId, $nodeType, $pdo) {
+    if ($nodeType === 'office') {
+        // For offices, use the ACORES ID directly
+        return $nodeId;
+    } elseif ($nodeType === 'shop') {
+        // For shops, get their parent post office ACORES ID
+        return getShopParentAcoresId($nodeId, $pdo);
+    }
+    return null;
+}
+
+// Convert shop/office IDs to post office ACORES IDs for path calculation
+$startAcoresId = getPathNodeId($startId, $startType, $pdo);
+$finishAcoresId = getPathNodeId($finishId, $finishType, $pdo);
+
+// Validate that we got valid ACORES IDs
+if (!$startAcoresId || !$finishAcoresId) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'Could not resolve start or finish location to a post office node',
+        'results' => null
+    ]);
+    exit;
+}
+
+// Build the list of needed node IDs: start, finish, their parents, and all root nodes.
+$neededIds = [$startAcoresId, $finishAcoresId];
+$rootNodes = array_map('str_getcsv', file(dirname(__DIR__) . '/DATA/LOCAL/root_nodes.csv'));
+$rootIds = array_column($rootNodes, 0);
+$neededIds = array_unique(array_merge($neededIds, $rootIds));
+
 // Add parents of start and finish (1 level up).
-foreach ([$startId, $finishId] as $id) {
+foreach ([$startAcoresId, $finishAcoresId] as $id) {
     $parentId = getParentId($id, $pdo);
     if ($parentId) $neededIds[] = $parentId;
 }
@@ -204,8 +263,8 @@ function buildFullJourney($startId, $finishId, $byId, $rootIds) {
     return $journey;
 }
 
-// Build the journey from the provided start and finish node IDs.
-$journey = buildFullJourney($startId, $finishId, $byId, $rootIds);
+// Build the journey from the provided start and finish ACORES IDs.
+$journey = buildFullJourney($startAcoresId, $finishAcoresId, $byId, $rootIds);
 if (!is_array($journey)) {
     $journey = [];
 }

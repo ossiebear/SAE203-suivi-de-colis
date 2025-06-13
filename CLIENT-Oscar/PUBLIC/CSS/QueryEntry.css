@@ -2,17 +2,67 @@
 /* SAE203 groupe A2 */
 /* AI usage: Fully written by AI, comments written by AI. GPT4.1-mini */
 
+/* ================================
+   CSS VARIABLES & THEME SETUP
+   ================================ */
+
+/* Light Theme Variables */
+:root {
+    --bg-primary: #f7f8fa;
+    --bg-secondary: #fff;
+    --text-primary: #222;
+    --text-secondary: #666;
+    --border-color: #ddd;
+    --border-light: #ececec;
+    --shadow: rgba(0,0,0,0.04);
+    --shadow-modal: rgba(0, 0, 0, 0.15);
+    --accent-red: #c00000;
+    --accent-yellow: #f7c600;
+    --accent-blue: #1a3578;
+    --accent-pink: #c6007e;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444;
+    --border-light: #333;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-modal: rgba(0, 0, 0, 0.5);
+    --accent-red: #ff4444;
+    --accent-yellow: #ffcc00;
+    --accent-blue: #4a90e2;
+    --accent-pink: #ff007f;
+}
+
 /* ==========================================================================
    1. General Styles
    ========================================================================== */
 
-   body {
-    font-family: 'Inter', 'Roboto', sans-serif;
+/* Top color bar */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--accent-red);
+    z-index: 9999;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 40px 20px;
-    background-color: #293241;
-    color: #1f2937;
+    padding-top: 44px; /* Account for top color bar */
+    background: var(--bg-primary);
+    color: var(--text-primary);
     min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* ==========================================================================
@@ -27,9 +77,10 @@
     text-align: left;
     margin-bottom: 40px;
     padding: 24px;
-    background: linear-gradient(135deg, #3d5a80 0%, #98c1d9 100%);
+    background: var(--bg-secondary);
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--border-light);
 }
 
 .icon {
@@ -45,14 +96,20 @@
     height: 50px;
     display: inline-block;
     margin: 10px;
+    transition: opacity 0.2s;
+}
+
+#homeicon:hover {
+    opacity: 0.8;
 }
 
 .header h1 {
-    color: white;
+    color: var(--accent-red);
     font-size: 2.5rem;
     margin: 0;
     font-weight: 700;
     letter-spacing: -0.025em;
+    font-family: 'ADLaM Display', cursive;
 }
 
 /* ==========================================================================
@@ -60,10 +117,11 @@
    ========================================================================== */
 
 .input-group {
-    background: #8b8c89;
+    background: var(--bg-secondary);
     padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--border-light);
     margin-bottom: 30px;
     display: flex;
     flex-wrap: wrap;
@@ -74,26 +132,30 @@
 
 input[type="text"] {
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     min-width: 350px;
     transition: all 0.2s;
-    background: #f9fafb;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     position: relative;
-    
 }
 
 input[type="text"]:focus {
-    border-color: #3b82f6;
-    background: white;
+    border-color: var(--accent-blue);
+    background: var(--bg-secondary);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 3px rgba(26, 53, 120, 0.2);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-secondary);
 }
 
 label {
     font-weight: 500;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -103,33 +165,34 @@ label {
 #search-button,
 #toggle-csv {
     padding: 12px 24px;
-    font-weight: 500;
+    font-weight: 600;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: 'Roboto', Arial, sans-serif;
 }
 
 #search-button {
-    background: #ee6c4d;
-    color: white;
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    background: var(--accent-yellow);
+    color: #222;
+    box-shadow: 0 2px 4px rgba(247, 198, 0, 0.3);
 }
 
 #search-button:hover {
-    background: #cc5803;
+    background: #ffe066;
     transform: translateY(-1px);
 }
 
 #toggle-csv {
-    background: #9ca3af;
-    color: white;
-    box-shadow: 0 2px 4px rgba(156, 163, 175, 0.3);
+    background: var(--text-secondary);
+    color: var(--bg-secondary);
+    box-shadow: 0 2px 4px var(--shadow);
 }
 
 #toggle-csv:hover {
-    background: #6b7280;
+    background: var(--text-primary);
     transform: translateY(-1px);
 }
 
@@ -147,12 +210,12 @@ label {
 }
 
 #path-area, #map-area {
-    background: #8b8c89;
+    background: var(--bg-secondary);
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--border-light);
     padding: 20px;
     min-height: 600px;
-    border: none;
     position: relative;
 }
 
@@ -161,9 +224,9 @@ label {
    ========================================================================== */
 
 #save-path-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+    background: var(--accent-yellow);
+    color: #222;
+    padding: 12px 24px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -173,20 +236,20 @@ label {
     min-width: 200px;
     min-height: 50px;
     font-size: 1rem;
-    transition: background-color 0.5s ease, transform 0.5s ease;
-
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(247, 198, 0, 0.3);
 }
 
 #save-path-btn:hover {
-    background-color: #206923;
-    transition: background-color 0.5s ease, transform 0.5s ease;
+    background: #ffe066;
     transform: scale(1.05);
-
+    box-shadow: 0 4px 8px rgba(247, 198, 0, 0.4);
 }
 
 #tracking-code {
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
     margin-top: 10px;
     position: absolute;
     bottom: 20px;
@@ -198,7 +261,7 @@ label {
    ========================================================================== */
 
 #map-area {
-    background: #8b8c89;
+    background: var(--bg-secondary);
 }
 
 #map {
@@ -206,6 +269,7 @@ label {
     height: 100%;
     border-radius: 12px;
     overflow: hidden;
+    border: 1px solid var(--border-light);
 }
 
 /* ==========================================================================
@@ -213,10 +277,10 @@ label {
    ========================================================================== */
 
 .autocomplete-list {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--border-color);
     padding: 8px 0;
     max-height: 200px;
     position: absolute;
@@ -232,10 +296,11 @@ label {
     padding: 8px 16px;
     cursor: pointer;
     transition: background 0.2s;
+    color: var(--text-primary);
 }
 
 .autocomplete-list li:hover {
-    background: #f3f4f6;
+    background: var(--bg-primary);
 }
 
 /* ==========================================================================
@@ -246,7 +311,7 @@ label {
     position: relative;
     margin-left: 32px;
     padding-left: 24px;
-    border-left: 3px solid #e5e7eb;
+    border-left: 3px solid var(--border-color);
 }
 
 .timeline-step {
@@ -257,18 +322,15 @@ label {
 }
 
 .timeline-step .timeline-subtitle {
-    font-size:0.7em;
-    color:#9c9c9c;
+    font-size: 0.7em;
+    color: var(--text-secondary);
 }
-
-
-
 
 .timeline-circle {
     width: 18px;
     height: 18px;
-    background: #fff;
-    border: 4px solid #3b82f6;
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-blue);
     border-radius: 50%;
     position: absolute;
     left: -33px;
@@ -281,6 +343,7 @@ label {
 .timeline-content {
     margin-left: 12px;
     min-width: 0;
+    color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -301,5 +364,199 @@ label {
 
 .shake {
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    background-color: #cc5803 !important;
+    background-color: #ff6b6b !important;
+}
+
+/* ==========================================================================
+   11. Dark Mode Specific Styles
+   ========================================================================== */
+
+/* Dark mode input improvements */
+[data-theme="dark"] input[type="text"] {
+    border-color: var(--border-color);
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] input[type="text"]:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+/* Dark mode timeline improvements */
+[data-theme="dark"] .timeline {
+    border-left-color: var(--border-color);
+}
+
+[data-theme="dark"] .timeline-circle {
+    background: var(--bg-secondary);
+    border-color: var(--accent-blue);
+}
+
+/* Dark mode autocomplete improvements */
+[data-theme="dark"] .autocomplete-list {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .autocomplete-list li:hover {
+    background: var(--bg-primary);
+}
+
+/* ==========================================================================
+   12. Responsive Design & Media Queries
+   ========================================================================== */
+
+@media (max-width: 900px) {
+    #container {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    input[type="text"] {
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 10px;
+        padding-top: 24px;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    #path-area, #map-area {
+        min-height: 400px;
+    }
+    
+    #save-path-btn {
+        min-width: 150px;
+        min-height: 40px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ==========================================================================
+   13. Parcel Tracking Section Styles (TrackParcel.html specific)
+   ========================================================================== */
+
+.lp-track-parcel {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem 2rem 1.5rem 2rem;
+    text-align: center;
+    border: 1px solid var(--border-light);
+}
+
+.lp-track-parcel h2 {
+    color: var(--accent-blue);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.lp-track-parcel-form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.lp-track-parcel-form input {
+    width: 400px;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.lp-track-parcel-form input:focus {
+    border-color: var(--accent-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(26, 53, 120, 0.2);
+}
+
+.lp-track-parcel-form input::placeholder {
+    color: var(--text-secondary);
+}
+
+.lp-track-parcel-form button {
+    background: var(--accent-yellow);
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 2rem;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(247, 198, 0, 0.3);
+}
+
+.lp-track-parcel-form button:hover {
+    background: #ffe066;
+    transform: translateY(-1px);
+}
+
+/* Dark mode improvements for tracking section */
+[data-theme="dark"] .lp-track-parcel h2 {
+    color: var(--accent-blue);
+}
+
+[data-theme="dark"] .lp-track-parcel-form input {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .lp-track-parcel-form input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+/* Responsive improvements for tracking section */
+@media (max-width: 600px) {
+    .lp-track-parcel {
+        margin: 1rem auto;
+        padding: 1.5rem 1rem;
+    }
+    
+    .lp-track-parcel h2 {
+        font-size: 1.5rem;
+    }
+    
+    .lp-track-parcel-form {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .lp-track-parcel-form input {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .lp-track-parcel-form button {
+        width: 100%;
+        max-width: 200px;
+    }
 }
