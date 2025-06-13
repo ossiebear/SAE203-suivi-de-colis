@@ -8,9 +8,9 @@ $conn=connexionBDD('../../DATA/DATABASE/CONFIG/config.php');
 // Récupérer les données du formulaire
 $OwnerName = $_POST["OwnerName"];
 $OwnerFirstname = $_POST["OwnerFirstname"];
-$emailAddressClient = $_POST["emailAddress"];
-$phoneNumberClient = $_POST["phoneNumber"];
-$passwordEncryptClient = $_POST["password"];
+$emailAddressOwner = $_POST["emailAddress"];
+$phoneNumberOwner = $_POST["phoneNumber"];
+$passwordEncryptOwner = $_POST["password"];
 
 try {
     // Insérer le client d'abord
