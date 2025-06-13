@@ -19,19 +19,17 @@
     <h1>Création d'un Client</h1>
     <div class="container">
         <div class="add-items">
-            <form action="../../SRC/EnregistrerClient.php" method="post" autocomplete="off">
-                <label for="clientName">Nom du client</label>
-                <input type="text" id="clientName" name="clientName" placeholder="Entrez le nom" required />
-                <label for="clientFirstname">Prénom du client</label>
-                <input type="text" id="clientFirstname" name="clientFirstname" placeholder="Entrez le prénom" required />
+            <form action="../../SRC/EnregistrerOwner.php" method="post" autocomplete="off">
+                <label for="OwnerName">Nom du Owner</label>
+                <input type="text" id="OwnerName" name="OwnerName" placeholder="Entrez le nom du propriétaire" required />
+                <label for="OwnerFirstname">Prénom du Owner</label>
+                <input type="text" id="OwnerFirstname" name="OwnerFirstname" placeholder="Entrez le prénom du propriétaire" required />
                 <label for="emailAddress">Adresse Email</label>
                 <input type="text" id="emailAddress" name="emailAddress" placeholder="Entrez l'adresse votre email" required />
                 <label for="phoneNumber">Numéro de Téléphone</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Entrez votre numéro de téléphone" required />
                 <label for="password">Entrez un Mot de passe</label>
                 <input type="password" id="password" name="password" placeholder="Tapez votre password" required />
-                <label for="destinationAddress">Adresse de livraison</label>
-                <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Entrez l'adresse" required />
                 <button type="submit">Enregistrer le client</button>
             </form>
         </div>

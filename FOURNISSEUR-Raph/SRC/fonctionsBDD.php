@@ -20,6 +20,25 @@ function enregistreClient($clientName, $clientFirstname, $accountEmail, $account
     return $idClient;
 }
 
+function enregistreOwner($OwnerName, $OwnerFirstname, $accountEmail, $accountPhone, $accountPassword, $connex) {
+    $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash) RETURNING id";
+    $res = $connex->prepare($sql);
+
+    $data = [
+        ':first_name' => $OwnerName,         // prénom
+        ':last_name' => $OwnerFirstname,              // nom de famille
+        ':account_email' => $accountEmail,
+        ':account_phone_number' => $accountPhone,
+        ':account_password_hash' => $hashedPassword,
+    ];
+
+    $res->execute($data);
+    $idClient = $res->fetchColumn();
+    return $idClient;
+}
+
 function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $accountPhone, $accountPassword, $defaultAddress, $connex) {
     $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
 
