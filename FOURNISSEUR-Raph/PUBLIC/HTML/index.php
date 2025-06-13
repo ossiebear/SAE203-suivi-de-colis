@@ -147,6 +147,7 @@ $packages = GetPackages($conn, $clientId);
     </div>
 
     <script src="../JS/script.js"></script>
+    <script src="../JS/dark-mode.js"></script>
 </body>
 </html>
 
