@@ -40,8 +40,8 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
     return $idClient;
 }
 
-function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
-    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country, longitude, latitude) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country, :longitude, :latitude) RETURNING id";
+function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $latitude, $longitude, $connex) {
+    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country, latitude, longitude) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country, :latitude, :longitude) RETURNING id";
     $res = $connex->prepare($sql);
 
     $data = [
@@ -52,8 +52,8 @@ function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin
         ':city' => $villeLocation,
         ':postal_code' => $codePostal,
         ':country' => $pays,
-        ':longitude' => $longitude,
-        ':latitude' => $latitude
+        ':latitude' => $latitude,
+        ':longitude' => $longitude
     ];
 
     $res->execute($data);
