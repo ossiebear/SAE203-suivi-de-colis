@@ -49,7 +49,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
         <div class="add-items">
             <form action="../../SRC/EnregistrerMagasin.php" method="post" autocomplete="off">
                 <label for="shopName2">Nom du Magasin</label>
-                <input type="text" id="shopName2" name="shopName" placeholder="Entrez le nom du magasin" required />
+                <input type="text" id="shopName2" name="shopName2" placeholder="Entrez le nom du magasin" required />
                 
                 <?php
                 $resultat = listerGerants($conn);
@@ -62,7 +62,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                     print("</pre>");
                     */
 
-                print '<select name="P_idgerant" required>';
+                print '<select name="P_idgerant" id="P_idgerant" required>';
                 print '<option value="">-- Choisir un gérant --</option>';
                 foreach ($resuTab as $ligne) {
                     $nom_complet = $ligne["first_name"] . ' ' . $ligne["last_name"];
