@@ -62,7 +62,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                     print("</pre>");
                     */
 
-                print '<select name="P_idgerant">';
+                print '<select name="P_idgerant" required>';
                 print '<option value="">-- Choisir un gérant --</option>';
                 foreach ($resuTab as $ligne) {
                     $nom_complet = $ligne["first_name"] . ' ' . $ligne["last_name"];
