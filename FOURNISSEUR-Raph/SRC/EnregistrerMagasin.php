@@ -26,4 +26,6 @@ try {
     echo '<h1>Erreur lors de l\'enregistrement</h1>';
     echo '<p>' . $e->getMessage() . '</p>';
 }
+
+deconnexionBDD($conn);
 ?>
