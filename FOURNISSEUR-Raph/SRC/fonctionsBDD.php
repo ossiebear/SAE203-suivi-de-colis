@@ -41,7 +41,7 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
 }
 
 function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
-    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country) RETURNING id";
+    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country, longitude, latitude) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country, :longitude, :latitude) RETURNING id";
     $res = $connex->prepare($sql);
 
     $data = [
@@ -52,6 +52,8 @@ function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin
         ':city' => $villeLocation,
         ':postal_code' => $codePostal,
         ':country' => $pays
+        ':longitude' => $longitude,
+        ':latitude' => $latitude
     ];
 
     $res->execute($data);
@@ -98,5 +100,32 @@ function GetPackages($conn, $clientId = 0) {
     $packages = $res->fetchAll();
     return $packages;
 }
+
+function GetLocalisationMagasin($ville) {
+    $url = "https://nominatim.openstreetmap.org/search?q=".urlencode($ville)."&format=json&limit=1";
+
+    // Nominatim demande un User-Agent personnalisé
+    $options = [
+        "http" => [
+            "header" => "User-Agent: MyApp/1.0\r\n"
+        ]
+    ];
+
+    // context sert a personnaliser la requet avec un user agent personalisé 
+    $context = stream_context_create($options); // doc https://www.php.net/manual/fr/function.stream-context-create.php
+
+    $response = file_get_contents($url, false, $context);
+    $data = json_decode($response, true);
+
+    if (!empty($data)) {
+        return [
+            "lat" => $data[0]['lat'],
+            "lon" => $data[0]['lon']
+        ];
+    } else {
+        return null;
+    }
+}
+
 
 ?>

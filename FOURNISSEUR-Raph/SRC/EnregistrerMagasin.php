@@ -13,10 +13,11 @@ $addressMagasin = $_POST["shopAddress"];
 $villeLocation = $_POST["villeLocation"];
 $codePostal = $_POST["codePostal"];
 $pays = $_POST["pays"];
+$latitude, $longitude = GetLocalisationMagasin($villeLocation);
 
 try {
     // Insérer le client d'abord
-    $idMagasin = enregistreMagasin($magasinName, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal ,$pays, $conn);
+    $idMagasin = enregistreMagasin($magasinName, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal ,$pays, $latitude, $longitude, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';
