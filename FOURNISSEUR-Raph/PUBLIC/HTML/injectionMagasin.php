@@ -16,11 +16,13 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 </head>
 <body>
     <nav class="main-nav">
-    <ul>
+        <ul>
+            <li><a href="injectionAccueil.html" class="active">Accueil</a></li>
             <li><a href="injectionClient.html">Création Client</a></li>
             <li><a href="injectionOwner.html">Création Owner</a></li>
             <li><a href="injectionColi.html">Création Colis</a></li>
             <li><a href="injectionMagasin.php">Création Magasin</a></li>
+            <li><a href="index.php">Liste des Colis</a></li>
         </ul>
     </nav>
 

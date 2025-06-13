@@ -20,6 +20,16 @@ $packages = GetPackages($conn, $clientId);
     <link rel="stylesheet" href="../CSS/index.css">
 </head>
 <body>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="injectionAccueil.html" class="active">Accueil</a></li>
+            <li><a href="injectionClient.html">Création Client</a></li>
+            <li><a href="injectionOwner.html">Création Owner</a></li>
+            <li><a href="injectionColi.html">Création Colis</a></li>
+            <li><a href="injectionMagasin.php">Création Magasin</a></li>
+            <li><a href="index.php">Liste des Colis</a></li>
+        </ul>
+    </nav>
     <div class="container">
         <h1>Gestion des colis</h1>
         
