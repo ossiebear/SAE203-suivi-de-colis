@@ -2,7 +2,6 @@
 
 function enregistreClient($clientName, $clientFirstname, $accountEmail, $accountPhone, $accountPassword, $defaultAddress, $connex) {
     $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
-    //$hashedPassword = $accountPassword;
 
     $sql = "INSERT INTO clients (first_name, last_name, account_email, account_phone_number, account_password_hash, default_address) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash, :default_address) RETURNING id";
     $res = $connex->prepare($sql);
@@ -23,7 +22,6 @@ function enregistreClient($clientName, $clientFirstname, $accountEmail, $account
 
 function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $accountPhone, $accountPassword, $defaultAddress, $connex) {
     $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
-    //$hashedPassword = $accountPassword;
 
     $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash, default_address) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash, :default_address) RETURNING id";
     $res = $connex->prepare($sql);
@@ -35,6 +33,24 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
         ':account_phone_number' => $accountPhone,
         ':account_password_hash' => $hashedPassword,
         ':default_address' => $defaultAddress
+    ];
+
+    $res->execute($data);
+    $idClient = $res->fetchColumn();
+    return $idClient;
+}
+
+function enregistreMagasin($magasinName, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
+    $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash, default_address) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash, :default_address) RETURNING id";
+    $res = $connex->prepare($sql);
+
+    $data = [
+        ':name' => $magasinName,         // prénom
+        ':owner_id' => $ownerID,              // nom de famille
+        ':address' => $addressMagasin,
+        ':city' => $villeLocation,
+        ':postal_code' => $codePostal,
+        ':country' => $pays
     ];
 
     $res->execute($data);
