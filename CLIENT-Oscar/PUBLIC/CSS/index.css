@@ -1,4 +1,3 @@
-
 /**
  * =================================================================
  * PARCEL TRACKING LANDING PAGE STYLES
@@ -660,4 +659,266 @@ input:checked + .slider:before {
         margin-left: 0;
         order: 1;
     }
+}
+
+/* ================================
+   SHIPPING FORM STYLES
+   ================================ */
+
+.shipping-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.shipping-form-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    font-family: var(--font-title);
+    font-size: 2rem;
+}
+
+.location-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.location-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative; /* Important for autocomplete positioning */
+}
+
+.location-input label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.location-textbox {
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+}
+
+.location-textbox:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(192, 0, 0, 0.1);
+}
+
+.location-textbox::placeholder {
+    color: var(--text-secondary);
+}
+
+.location-mode-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.mode-btn:hover {
+    border-color: var(--brand-primary);
+    color: var(--text-primary);
+}
+
+.mode-btn.active {
+    background: var(--brand-primary);
+    color: white;
+    border-color: var(--brand-primary);
+}
+
+/* ================================
+   AUTOCOMPLETE DROPDOWN STYLES
+   ================================ */
+
+.autocomplete-list {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-modal);
+    border: 1px solid var(--border-color);
+    padding: 4px 0;
+    max-height: 200px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-top: 4px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.autocomplete-list li {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: var(--text-primary);
+    border: none;
+    margin: 0;
+}
+
+.autocomplete-list li:hover {
+    background: var(--bg-primary);
+    color: var(--brand-primary);
+}
+
+/* Dark theme autocomplete improvements */
+[data-theme="dark"] .autocomplete-list {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .autocomplete-list li:hover {
+    background: var(--bg-primary);
+}
+
+/* ================================
+   MAP SECTION STYLES
+   ================================ */
+
+.map-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.map-section h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#map {
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* Dark theme map section */
+[data-theme="dark"] .map-section {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] #map {
+    border-color: var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .location-input-group {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .shipping-form-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .mode-btn {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+    
+    /* Map responsive styles */
+    .map-section {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    .map-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    #map {
+        height: 300px !important;
+    }
+}
+
+/* ================================
+   SUBMIT SECTION STYLES
+   ================================ */
+
+.submit-section {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+}
+
+.submit-btn {
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(192, 0, 0, 0.2);
+    min-width: 200px;
+}
+
+.submit-btn:hover {
+    background: #a00000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(192, 0, 0, 0.3);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .submit-btn {
+    background: var(--brand-primary);
+    box-shadow: 0 2px 8px rgba(192, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .submit-btn:hover {
+    background: #d00000;
+    box-shadow: 0 4px 12px rgba(192, 0, 0, 0.5);
 }

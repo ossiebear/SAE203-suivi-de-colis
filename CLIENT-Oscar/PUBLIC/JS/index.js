@@ -92,9 +92,7 @@ function selectSite(siteType) {
     // Update dropdown button text with selected option
     const selectedText = selectedOption.querySelector('h3').textContent;
     const dropdownButton = document.querySelector('.lp-dropdown span');
-    dropdownButton.textContent = selectedText;
-
-    // Close the modal after selection
+    dropdownButton.textContent = selectedText;    // Close the modal after selection
     closeSiteModal();
 }
 
@@ -117,8 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listener to close modal when clicking outside
     window.addEventListener('click', function(event) {
-        const modal = document.getElementById('siteModal');
-        // Close modal if clicking directly on the modal background (not modal content)
+        const modal = document.getElementById('siteModal');        // Close modal if clicking directly on the modal background (not modal content)
         if (event.target === modal) {
             closeSiteModal();
         }

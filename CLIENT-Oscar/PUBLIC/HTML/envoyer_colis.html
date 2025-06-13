@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
     <title>Example Title</title>
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="icon" type="image/png" href="../IMG/redboot_small.png">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <header class="lp-header">
@@ -74,13 +78,58 @@
             </ul>
             <div class="lp-mail">
                 <a href="mailto:contact@redboot.duck">📧contact@redboot.duck</a>
-            </div>
-        </nav></header>
+            </div>        </nav></header>
       <main>
-        <!-- Content sections would go here -->
-    </main>
-    
-    <!-- External JavaScript -->
+        <div class="shipping-form-container">
+            <h2>Envoyer un colis</h2>
+            
+            <div class="location-input-group">                <!-- Start Location -->
+                <div class="location-input">
+                    <label for="start">Point de départ</label>
+                    <input type="text" id="start" name="start" placeholder="Enter post office location" class="location-textbox" data-search-type="office">
+                    <div class="location-mode-toggle">
+                        <button type="button" id="start-office-btn" class="mode-btn active" onclick="setLocationType('start', 'office')">
+                            🏢 Bureau
+                        </button>
+                        <button type="button" id="start-shop-btn" class="mode-btn" onclick="setLocationType('start', 'shop')">
+                            🏪 Magasin
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Destination Location -->
+                <div class="location-input">
+                    <label for="destination">Destination</label>
+                    <input type="text" id="destination" name="destination" placeholder="Enter destination office" class="location-textbox" data-search-type="office">
+                    <div class="location-mode-toggle">
+                        <button type="button" id="dest-office-btn" class="mode-btn active" onclick="setLocationType('destination', 'office')">
+                            🏢 Bureau
+                        </button>
+                        <button type="button" id="dest-shop-btn" class="mode-btn" onclick="setLocationType('destination', 'shop')">
+                            🏪 Magasin
+                        </button>
+                    </div>                </div>
+            </div>
+              <!-- Submit Button -->
+            <div class="submit-section">
+                <button type="button" id="generate-path-btn" class="submit-btn" onclick="submitPath()">
+                    📦 Générer le chemin
+                </button>
+            </div>
+            
+            <!-- Map Container -->
+            <div class="map-section" id="map-section" style="display: none;">
+                <h3>Visualisation du chemin</h3>
+                <div id="map" style="height: 400px; width: 100%; border-radius: 8px; margin-top: 10px;"></div>
+            </div>
+        </div>
+    </main>      <!-- External JavaScript -->
     <script src="../JS/index.js"></script>
+    <script src="../JS/send_parcel.js"></script>
+    <script src="../JS/autocomplete/autocomplete.js"></script>
+    
+    <!-- Map JavaScript -->
+    <script src="../JS/map/map-ini.js"></script>
+    <script src="../JS/map/map-render.js"></script>
 </body>
 </html>
