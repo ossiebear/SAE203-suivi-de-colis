@@ -7,6 +7,7 @@ $conn=connexionBDD('../../DATA/DATABASE/CONFIG/config.php');
 
 // Récupérer les données du formulaire
 $magasinName = $_POST["shopName2"];
+$categorieID = $_POST["P_idcategorie"];
 $ownerID = $_POST["P_idgerant"];
 $addressMagasin = $_POST["shopAddress"];
 $villeLocation = $_POST["villeLocation"];

@@ -51,7 +51,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                 <label for="shopName2">Nom du Magasin</label>
                 <input type="text" id="shopName2" name="shopName2" placeholder="Entrez le nom du magasin" required />
                 
-                <?php
+                <?php 
                 $resultat = ListerShopsCategories($conn);
                 $resuTab = $resultat->fetchAll();
 
@@ -69,8 +69,7 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                     print '<option value="'.$ligne["id"].'">'.htmlspecialchars($cartegories).'</option>';
                 }
                 print "</select>";
-    
-
+                
                 $resultat = listerGerants($conn);
                 $resuTab = $resultat->fetchAll();
 
