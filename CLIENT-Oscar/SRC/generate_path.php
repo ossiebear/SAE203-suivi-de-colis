@@ -166,14 +166,13 @@ if (empty($response['validation'])) {
             $c = 2 * atan2(sqrt($a), sqrt(1-$a));
             
             return $earthRadius * $c;
-        }
-          // Get all root nodes from the database
-        $stmt = $pdo->prepare("SELECT * FROM root_offices");
+        }          // Get all root nodes from the database
+        $stmt = $pdo->prepare("SELECT * FROM department_offices");
         $stmt->execute();
         $rootNodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         if (empty($rootNodes)) {
-            throw new Exception("No root offices found in database");
+            throw new Exception("No department offices found in database");
         }
         
         // Find closest root node for start side
@@ -265,11 +264,13 @@ if (empty($response['validation'])) {
             'side' => 'start',
             'data' => $nodes['start']['extremity']
         ];
-        
-        // Add start parent if exists and different from extremity
+          // Add start parent if exists and different from extremity
         if ($nodes['start']['parent'] && $nodes['start']['parent']['id'] !== $nodes['start']['extremity']['id']) {
+            // Check if this parent is also the root node
+            $isParentAlsoRoot = $startRootNode && $startRootNode['id'] === $nodes['start']['parent']['id'];
+            
             $path[] = [
-                'node_type' => 'parent',
+                'node_type' => $isParentAlsoRoot ? 'parent_root' : 'parent',
                 'side' => 'start',
                 'data' => $nodes['start']['parent']
             ];
