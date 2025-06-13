@@ -16,7 +16,7 @@ $pays = $_POST["pays"];
 
 try {
     // Insérer le client d'abord
-    $idMagasin = enregistreMagasin($magasinName, $ownerID, $addressMagasin, $villeLocation, $codePostal ,$pays, $conn);
+    $idMagasin = enregistreMagasin($magasinName, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal ,$pays, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';

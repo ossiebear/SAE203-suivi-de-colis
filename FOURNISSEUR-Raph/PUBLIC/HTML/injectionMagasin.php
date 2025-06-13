@@ -63,13 +63,13 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                     */
 
                 print '<select name="P_idcategorie" id="P_idcategorie" required>';
-                print '<option value="">-- Choisir un gérant --</option>';
+                print '<option value="">-- Choisir une catégorie --</option>';
                 foreach ($resuTab as $ligne) {
                     $cartegories = $ligne["category_name"];
                     print '<option value="'.$ligne["id"].'">'.htmlspecialchars($cartegories).'</option>';
                 }
                 print "</select>";
-                
+
                 $resultat = listerGerants($conn);
                 $resuTab = $resultat->fetchAll();
 

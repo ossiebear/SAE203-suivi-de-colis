@@ -75,7 +75,7 @@ function ListerClients($conn) {
 }
 
 function ListerShopsCategories($conn) {
-    $sql = "SELECT id, category_name name FROM shop_categories ORDER BY category_name";
+    $sql = "SELECT id, category_name FROM shop_categories ORDER BY category_name";
     $res = $conn->prepare($sql);
     $res->execute();
     $categories = $res->fetchAll();
