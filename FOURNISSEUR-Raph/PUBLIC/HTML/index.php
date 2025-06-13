@@ -20,14 +20,6 @@ $packages = GetPackages($conn, $clientId);
     <link rel="stylesheet" href="../CSS/styles-listeClient.css">
 </head>
 <body>
-    <!-- Toggle mode sombre -->
-    <div class="dark-mode-toggle">
-        <span class="dark-mode-label">Mode sombre</span>
-        <label class="switch">
-            <input type="checkbox" id="darkModeToggle">
-            <span class="slider"></span>
-        </label>
-    </div>
     <div class="container">
         <h1>Gestion des colis</h1>
         
