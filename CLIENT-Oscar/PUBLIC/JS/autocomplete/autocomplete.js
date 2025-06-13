@@ -331,8 +331,7 @@ function submitPath() {
                         ensureMapSize();
                     }
                 }
-                
-                // Convert path data to format expected by renderPathToMap
+                  // Convert path data to format expected by renderPathToMap
                 const pathForMap = data.path.map(node => {
                     const nodeData = node.data;
                     return {
@@ -341,6 +340,9 @@ function submitPath() {
                         libelle_du_site: nodeData.name || nodeData.libelle_du_site || 'Unknown Location'
                     };
                 });
+                
+                // Populate the journey steps list
+                populateJourneySteps(data.path);
                 
                 // Render the path on the map (with a small delay to ensure map is ready)
                 setTimeout(() => {
@@ -366,3 +368,85 @@ function submitPath() {
 
 // Make submitPath available globally
 window.submitPath = submitPath;
+
+/**
+ * Populates the journey steps list with path data
+ * @param {Array} pathData - Array of path nodes from generate_path.php
+ */
+function populateJourneySteps(pathData) {
+    const journeyList = document.getElementById('journey-list');
+    if (!journeyList) {
+        console.error('❌ Journey list container not found');
+        return;
+    }
+    
+    // Clear existing steps
+    journeyList.innerHTML = '';
+    
+    // Create step items
+    pathData.forEach((pathNode, index) => {
+        const nodeData = pathNode.data;
+        const nodeType = pathNode.node_type;
+        const side = pathNode.side;
+        
+        // Create list item
+        const li = document.createElement('li');
+        li.className = 'step-item';
+        li.setAttribute('data-step', index);
+        
+        // Get step title and type display
+        const stepTitle = nodeData.name || nodeData.libelle_du_site || 'Unknown Location';
+        const typeText = getStepTypeText(nodeType, side);
+        
+        li.innerHTML = `
+            <div class="step-number">${index + 1}</div>
+            <div class="step-content">
+                <div class="step-title">${stepTitle}</div>
+                <div class="step-type ${nodeType}">${typeText}</div>
+            </div>
+        `;
+        
+        // Add click handler to highlight map marker
+        li.addEventListener('click', () => {
+            highlightMapMarker(index);
+            // Remove previous highlights
+            document.querySelectorAll('.step-item').forEach(item => item.classList.remove('highlighted'));
+            // Add highlight to clicked item
+            li.classList.add('highlighted');
+        });
+        
+        journeyList.appendChild(li);
+    });
+    
+    console.log(`✅ Journey steps populated: ${pathData.length} steps`);
+}
+
+/**
+ * Gets display text for step type
+ * @param {string} nodeType - The type of node (extremity, parent, root, common_root)
+ * @param {string} side - The side of the journey (start, end, bridge)
+ * @returns {string} Display text for the step type
+ */
+function getStepTypeText(nodeType, side) {
+    const typeMap = {
+        'extremity': side === 'start' ? '🚀 Point de départ' : '🎯 Destination',
+        'parent': side === 'start' ? '📤 Bureau parent (départ)' : '📥 Bureau parent (arrivée)',
+        'root': side === 'start' ? '🏢 Bureau régional (départ)' : '🏢 Bureau régional (arrivée)',
+        'common_root': '🌐 Centre de tri national'
+    };
+    
+    return typeMap[nodeType] || nodeType;
+}
+
+/**
+ * Highlights a specific marker on the map
+ * @param {number} stepIndex - Index of the step to highlight
+ */
+function highlightMapMarker(stepIndex) {
+    // This function will be implemented to interact with the map markers
+    // For now, just log the action
+    console.log(`🔍 Highlighting map marker for step ${stepIndex + 1}`);
+    
+    // TODO: Add map marker highlighting logic
+    // This could involve changing marker color, opening popup, or pulsing animation
+}

@@ -116,11 +116,18 @@
                     📦 Générer le chemin
                 </button>
             </div>
-            
-            <!-- Map Container -->
+              <!-- Map Container -->
             <div class="map-section" id="map-section" style="display: none;">
                 <h3>Visualisation du chemin</h3>
-                <div id="map" style="height: 400px; width: 100%; border-radius: 8px; margin-top: 10px;"></div>
+                <div class="map-container">
+                    <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+                    <div class="journey-steps">
+                        <h4>Étapes du voyage</h4>
+                        <ul id="journey-list" class="steps-list">
+                            <!-- Journey steps will be populated here -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </main>      <!-- External JavaScript -->
