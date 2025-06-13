@@ -15,6 +15,14 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <!-- Toggle mode sombre -->
+    <div class="dark-mode-toggle">
+        <span class="dark-mode-label">Mode sombre</span>
+        <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
     <nav class="main-nav">
         <ul>
             <li><a href="injectionClient.html">Création Client</a></li>
