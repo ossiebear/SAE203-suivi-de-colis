@@ -40,12 +40,13 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
     return $idClient;
 }
 
-function enregistreMagasin($magasinName, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
-    $sql = "INSERT INTO shops (name, owner_id, address, city, postal_code, country) VALUES (:name, :owner_id, :address, :city, :postal_code, :country) RETURNING id";
+function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
+    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country) RETURNING id";
     $res = $connex->prepare($sql);
 
     $data = [
         ':name' => $magasinName,         // prénom
+        ':category_id' => $category_id,
         ':owner_id' => $ownerID,              // nom de famille
         ':address' => $addressMagasin,
         ':city' => $villeLocation,
@@ -71,6 +72,14 @@ function ListerClients($conn) {
     $res->execute();
     $clients = $res->fetchAll();
     return $clients;
+}
+
+function ListerShopsCategories($conn) {
+    $sql = "SELECT id, category_name name FROM shop_categories ORDER BY category_name";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $categories = $res->fetchAll();
+    return $categories;
 }
 
 function GetPackages($conn, $clientId = 0) {    

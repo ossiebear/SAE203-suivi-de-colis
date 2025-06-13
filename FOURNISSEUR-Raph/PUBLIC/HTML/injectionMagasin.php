@@ -52,6 +52,25 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                 <input type="text" id="shopName2" name="shopName2" placeholder="Entrez le nom du magasin" required />
                 
                 <?php
+                $resultat = ListerShopsCategories($conn);
+                $resuTab = $resultat->fetchAll();
+
+                // pour voir le contenu de resuTab (à décommenter pour execution) :
+                    /*
+                    print("<pre>");
+                    print_r($resuTab);
+                    print("</pre>");
+                    */
+
+                print '<select name="P_idcategorie" id="P_idcategorie" required>';
+                print '<option value="">-- Choisir un gérant --</option>';
+                foreach ($resuTab as $ligne) {
+                    $cartegories = $ligne["category_name"];
+                    print '<option value="'.$ligne["id"].'">'.htmlspecialchars($cartegories).'</option>';
+                }
+                print "</select>";
+    
+
                 $resultat = listerGerants($conn);
                 $resuTab = $resultat->fetchAll();
 
