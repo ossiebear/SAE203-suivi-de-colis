@@ -1,63 +1,31 @@
-/* ================================
-   CSS VARIABLES & THEME SETUP
-   ================================ */
-
-/* Light Theme Variables */
-:root {
-    --bg-primary: #f7f8fa;
-    --bg-secondary: #fff;
-    --text-primary: #222;
-    --text-secondary: #666;
-    --border-color: #ddd;
-    --border-light: #ececec;
-    --shadow: rgba(0,0,0,0.04);
-    --shadow-modal: rgba(0, 0, 0, 0.15);
-}
-
-/* Dark Theme Variables */
-[data-theme="dark"] {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --border-color: #444;
-    --border-light: #333;
-    --shadow: rgba(0,0,0,0.3);
-    --shadow-modal: rgba(0, 0, 0, 0.5);
-}
-
 body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: background-color 0.3s, color 0.3s;
-    padding-top: 4px;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: var(--bg-secondary);
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .filter-section {
-    background-color: var(--bg-secondary);
+    background-color: #f8f9fa;
     padding: 15px;
     border-radius: 5px;
     margin-bottom: 20px;
-    border: 1px solid var(--border-light);
+    border: 1px solid #dee2e6;
 }
 
 select, button {
     padding: 8px 12px;
     margin: 5px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #ddd;
     border-radius: 4px;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
 }
 
 button {
@@ -70,33 +38,33 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: var(--bg-secondary);
+    background-color: white;
 }
 
 th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
+    border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: var(--bg-primary);
+    background-color: #f8f9fa;
     font-weight: bold;
 }
 
 tr:hover {
-    background-color: var(--bg-primary);
+    background-color: #f5f5f5;
 }
 
 .no-data {
     text-align: center;
     padding: 40px;
-    color: var(--text-secondary);
+    color: #666;
 }
 
 .stats {
@@ -106,68 +74,10 @@ tr:hover {
 }
 
 .stat-card {
-    background-color: var(--bg-secondary);
+    background-color: #f8f9fa;
     padding: 15px;
     border-radius: 5px;
     flex: 1;
     text-align: center;
-    border: 1px solid var(--border-light);
-}
-
-.dark-mode-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.dark-mode-label {
-    color: var(--text-primary);
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
+    border: 1px solid #dee2e6;
 }

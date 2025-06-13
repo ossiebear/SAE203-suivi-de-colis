@@ -94,6 +94,5 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
     <?php 
     deconnexionBDD($conn);
     ?>
-    <script src="../JS/dark-mode.js"></script>
 </body>
 </html>
