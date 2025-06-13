@@ -11,7 +11,7 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 <head>
     <meta charset="UTF-8">
     <title>Enregistrement Client & Colis</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="stylesheet" href="../CSS/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>

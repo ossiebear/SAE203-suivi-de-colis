@@ -1,0 +1,521 @@
+
+/**
+ * =================================================================
+ * UNIFIED STYLES - DARK MODE DEFAULT
+ * Styles unifiés basés sur le design de la landing page
+ * =================================================================
+ */
+
+/* ================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ================================ */
+
+   :root {
+    /* Brand Colors */
+    --brand-primary: #c00000;
+    --brand-secondary: #c6007e;
+    --brand-accent: #f7c600;
+    --tracking-blue: #1a3578;
+    
+    /* Dark Theme as Default */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #444;
+    --border-light: #333;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-modal: rgba(0, 0, 0, 0.5);
+    
+    /* Typography */
+    --font-family: 'Roboto', Arial, sans-serif;
+    --font-title: 'ADLaM Display', cursive;
+    
+    /* Layout */
+    --container-max-width: 1200px;
+    --header-bar-height: 4px;
+}
+
+/* ================================
+   BASE STYLES & RESET
+   ================================ */
+
+/* Brand color bar at top */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-bar-height);
+    background: var(--brand-primary);
+    z-index: 9999;
+}
+
+body {
+    font-family: var(--font-family);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 24px; /* Space for brand bar */
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ================================
+   NAVIGATION STYLES
+   ================================ */
+
+.main-nav {
+    background: var(--brand-primary);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.main-nav li {
+    display: inline;
+}
+
+.main-nav a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 16px 24px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.main-nav a:hover,
+.main-nav a:focus,
+.main-nav .active {
+    background: #a00000;
+    color: #fff;
+}
+
+/* ================================
+   CONTAINER & LAYOUT
+   ================================ */
+
+.container {
+    background: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-light);
+}
+
+h1 {
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: var(--font-title);
+}
+
+h2, h3, h4 {
+    color: var(--text-primary);
+}
+
+/* ================================
+   FORM STYLES
+   ================================ */
+
+/* Form Creation Styles */
+.add-items form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.add-items label {
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.add-items input[type="text"],
+.add-items input[type="password"],
+.add-items input[type="number"],
+.add-items input[type="date"],
+.add-items select {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.add-items input[type="text"]:focus,
+.add-items input[type="password"]:focus,
+.add-items input[type="number"]:focus,
+.add-items input[type="date"]:focus,
+.add-items select:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 2px rgba(192, 0, 0, 0.25);
+}
+
+/* Select specific styles */
+.add-items select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.add-items select option {
+    padding: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.add-items select option[value=""] {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Submit buttons */
+.add-items button[type="submit"] {
+    padding: 12px 20px;
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.add-items button[type="submit"]:hover {
+    background: #a00000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(192, 0, 0, 0.3);
+}
+
+/* ================================
+   SEARCH FORM STYLES
+   ================================ */
+
+.search-form {
+    background: var(--bg-secondary);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.search-form input[type="text"], 
+.search-form input[type="password"],
+.search-form select {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 250px;
+    margin: 0 10px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.search-form input[type="text"]:focus,
+.search-form input[type="password"]:focus,
+.search-form select:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 2px rgba(192, 0, 0, 0.25);
+}
+
+.search-form input[type="submit"] {
+    padding: 10px 20px;
+    background: var(--brand-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.search-form input[type="submit"]:hover {
+    background: #a00000;
+    transform: translateY(-1px);
+}
+
+/* ================================
+   TABLE STYLES
+   ================================ */
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.results-table th {
+    background: var(--brand-primary);
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.results-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.results-table tr:nth-child(even) td {
+    background: var(--bg-primary);
+}
+
+.results-table tr:hover td {
+    background: var(--border-light);
+}
+
+/* ================================
+   CLIENT LIST SPECIFIC STYLES
+   ================================ */
+
+.filter-section {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.filter-section h3 {
+    color: var(--text-primary);
+    margin-top: 0;
+}
+
+select, button {
+    padding: 8px 12px;
+    margin: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+button {
+    background: var(--brand-primary);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #a00000;
+    transform: translateY(-1px);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+th {
+    background: var(--brand-primary);
+    font-weight: 600;
+    color: white;
+}
+
+tr:hover td {
+    background: var(--border-light);
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    flex: 1;
+    text-align: center;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.stat-card h4 {
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+}
+
+.stat-card p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ================================
+   STATUS BADGES (for package status)
+   ================================ */
+
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-delivered,
+.status-picked-up {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-created,
+.status-in-transit,
+.status-arrived-hub,
+.status-out-delivery {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-delayed,
+.status-failed,
+.status-returned {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-default {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+/* ================================
+   UTILITY CLASSES
+   ================================ */
+
+.no-results,
+.no-data {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 40px;
+}
+
+.no-data h3 {
+    color: var(--text-primary);
+}
+
+.error {
+    color: #f5c6cb;
+    background: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border: 1px solid #a94442;
+}
+
+/* Input placeholders */
+input::placeholder,
+select option {
+    color: var(--text-secondary);
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 900px) {
+    .stats {
+        flex-direction: column;
+    }
+    
+    .search-form input[type="text"],
+    .search-form input[type="password"],
+    .search-form select {
+        width: 100%;
+        max-width: 300px;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+        padding-top: 14px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .main-nav a {
+        padding: 12px 16px;
+    }
+    
+    .results-table,
+    table {
+        font-size: 14px;
+    }
+    
+    .results-table th,
+    .results-table td,
+    th, td {
+        padding: 8px;
+    }
+    
+    .search-form {
+        padding: 15px;
+    }
+    
+    .filter-section {
+        padding: 10px;
+    }
+}
