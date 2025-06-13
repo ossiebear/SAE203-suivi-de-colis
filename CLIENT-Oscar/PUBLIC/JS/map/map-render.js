@@ -3,6 +3,16 @@ let markers = [];
 let polylines = [];
 
 function renderPathToMap(journey) {
+    // Ensure map is initialized
+    if (!map && typeof initializeMap === 'function') {
+        initializeMap();
+    }
+    
+    if (!map) {
+        console.error('❌ Map not available for rendering');
+        return;
+    }
+
     // Remove existing markers and polylines from the map before rendering new ones
     if (Array.isArray(markers)) {
         markers.forEach(m => map.removeLayer(m));

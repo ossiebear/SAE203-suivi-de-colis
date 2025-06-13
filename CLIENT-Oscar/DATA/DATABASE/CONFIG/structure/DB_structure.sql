@@ -1,7 +1,7 @@
 CREATE TABLE "post_offices" (
   "id" serial PRIMARY KEY NOT NULL,
-  "acores_id" varchar,
   "parent_office_acores_id" varchar,
+  "acores_id" varchar,
   "name" varchar NOT NULL,
   "site_type" varchar,
   "street_address" text NOT NULL,
@@ -28,11 +28,11 @@ CREATE TABLE "delivery_companies" (
 
 CREATE TABLE "delivery_personnel" (
   "id" serial PRIMARY KEY NOT NULL,
+  "primary_office_acores_id" varchar NOT NULL,
   "first_name" varchar(50) NOT NULL,
   "last_name" varchar(50) NOT NULL,
   "email" varchar(255) UNIQUE NOT NULL,
   "phone_number" varchar(20),
-  "primary_office_id" integer NOT NULL,
   "company_id" integer NOT NULL,
   "hire_date" date NOT NULL,
   "is_active" boolean DEFAULT true,
@@ -54,6 +54,7 @@ CREATE TABLE "clients" (
 
 CREATE TABLE "shops" (
   "id" serial PRIMARY KEY NOT NULL,
+  "parent_office_acores_id" varchar,
   "name" varchar(255) NOT NULL,
   "category_id" integer,
   "description" text,
@@ -145,7 +146,7 @@ COMMENT ON COLUMN "post_offices"."site_type" IS 'Type/category of the site';
 
 COMMENT ON COLUMN "post_offices"."address_complement" IS 'Additional address information';
 
-COMMENT ON COLUMN "post_offices"."locality" IS 'District or area name';
+COMMENT ON COLUMN "post_offices"."city" IS 'City or municipality name';
 
 COMMENT ON COLUMN "post_offices"."insee_code" IS 'French INSEE municipality code';
 
@@ -154,8 +155,6 @@ COMMENT ON COLUMN "post_offices"."latitude" IS 'GPS latitude coordinate';
 COMMENT ON COLUMN "post_offices"."longitude" IS 'GPS longitude coordinate';
 
 COMMENT ON COLUMN "post_offices"."phone_number" IS 'Contact phone number';
-
-COMMENT ON COLUMN "delivery_personnel"."employee_id" IS 'Company employee ID';
 
 COMMENT ON COLUMN "clients"."account_email" IS 'Must be a valid email address';
 
@@ -223,7 +222,7 @@ COMMENT ON COLUMN "transit_events"."exception_reason" IS 'Reason for delays or i
 
 COMMENT ON COLUMN "transit_events"."recipient_name" IS 'Who received the package';
 
-ALTER TABLE "delivery_personnel" ADD FOREIGN KEY ("primary_office_id") REFERENCES "post_offices" ("id");
+ALTER TABLE "delivery_personnel" ADD FOREIGN KEY ("primary_office_acores_id") REFERENCES "post_offices" ("acores_id");
 
 ALTER TABLE "delivery_personnel" ADD FOREIGN KEY ("company_id") REFERENCES "delivery_companies" ("id");
 
