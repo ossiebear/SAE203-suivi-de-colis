@@ -3,7 +3,7 @@ require_once '../../SRC/fonctionsConnexion.php';
 require_once '../../SRC/fonctionsBDD.php';
 require_once '../../../DATA/DATABASE/CONFIG/config.php';
 
-$conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
+$conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 ?>
 
 <!DOCTYPE html>
@@ -32,11 +32,11 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                 <label for="shopFirstname">Prénom du Gérant du Magasin</label>
                 <input type="text" id="shopFirstname" name="shopFirstname" placeholder="Entrez le prénom" required />
                 <label for="emailAddress">Adresse Email</label>
-                <input type="text" id="emailAddress" name="emailAddress" placeholder="Entrez l'adresse votre email" required />
+                <input type="email" id="emailAddress" name="emailAddress" placeholder="Entrez votre email" required />
                 <label for="phoneNumber">Numéro de Téléphone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Entrez votre numéro de téléphone" required />
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Entrez votre numéro de téléphone" required />
                 <label for="password">Entrez un Mot de passe</label>
-                <input type="password" id="password" name="password" placeholder="Tapez votre password" required />
+                <input type="password" id="password" name="password" placeholder="Tapez votre mot de passe" required />
                 <label for="destinationAddress">Adresse de livraison</label>
                 <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Entrez l'adresse" required />
                 <button type="submit">Enregistrer le directeur</button>
@@ -50,49 +50,35 @@ $conn=connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
             <form action="../../SRC/EnregistrerMagasin.php" method="post" autocomplete="off">
                 <label for="shopName2">Nom du Magasin</label>
                 <input type="text" id="shopName2" name="shopName2" placeholder="Entrez le nom du magasin" required />
-                
-                
+
                 <label for="P_idcategorie">Catégorie du Magasin</label>
                 <?php 
                 $resultat = ListerShopsCategories($conn);
                 $resuTab = $resultat->fetchAll();
 
-                // pour voir le contenu de resuTab (à décommenter pour execution) :
-                    /*
-                    print("<pre>");
-                    print_r($resuTab);
-                    print("</pre>");
-                    */
-
-                print '<select name="P_idcategorie" id="P_idcategorie" required>';
-                print '<option value="">-- Choisir une catégorie --</option>';
+                echo '<select name="P_idcategorie" id="P_idcategorie" required>';
+                echo '<option value="">-- Choisir une catégorie --</option>';
                 foreach ($resuTab as $ligne) {
-                    $cartegories = $ligne["category_name"];
-                    print '<option value="'.$ligne["id"].'">'.htmlspecialchars($cartegories).'</option>';
+                    $categories = $ligne["category_name"];
+                    echo '<option value="'.htmlspecialchars($ligne["id"]).'">'.htmlspecialchars($categories).'</option>';
                 }
-                print "</select>";
+                echo "</select>";
                 ?>
+
                 <label for="P_idgerant">Gérant du Magasin</label>
                 <?php
                 $resultat = listerGerants($conn);
                 $resuTab = $resultat->fetchAll();
 
-                // pour voir le contenu de resuTab (à décommenter pour execution) :
-                    /*
-                    print("<pre>");
-                    print_r($resuTab);
-                    print("</pre>");
-                    */
-
-                print '<select name="P_idgerant" id="P_idgerant" required>';
-                print '<option value="">-- Choisir un gérant --</option>';
+                echo '<select name="P_idgerant" id="P_idgerant" required>';
+                echo '<option value="">-- Choisir un gérant --</option>';
                 foreach ($resuTab as $ligne) {
                     $nom_complet = $ligne["first_name"] . ' ' . $ligne["last_name"];
-                    print '<option value="'.$ligne["id"].'">'.htmlspecialchars($nom_complet).'</option>';
+                    echo '<option value="'.htmlspecialchars($ligne["id"]).'">'.htmlspecialchars($nom_complet).'</option>';
                 }
-                print "</select>";
+                echo "</select>";
                 ?>
-                
+
                 <label for="shopAddress">Adresse du Magasin</label>
                 <input type="text" id="shopAddress" name="shopAddress" placeholder="Entrez l'adresse du magasin" required />
                 <label for="villeLocation">Ville de location du Magasin</label>
