@@ -13,7 +13,10 @@ $addressMagasin = $_POST["shopAddress"];
 $villeLocation = $_POST["villeLocation"];
 $codePostal = $_POST["codePostal"];
 $pays = $_POST["pays"];
-$latitude, $longitude = GetLocalisationMagasin($villeLocation);
+
+$coordinates = GetLocalisationMagasin($villeLocation);
+$latitude = $coordinates['lat'];
+$longitude = $coordinates['lon'];
 
 try {
     // Insérer le client d'abord

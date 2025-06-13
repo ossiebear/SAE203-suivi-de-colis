@@ -51,14 +51,14 @@ function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin
         ':address' => $addressMagasin,
         ':city' => $villeLocation,
         ':postal_code' => $codePostal,
-        ':country' => $pays
+        ':country' => $pays,
         ':longitude' => $longitude,
         ':latitude' => $latitude
     ];
 
     $res->execute($data);
-    $idClient = $res->fetchColumn();
-    return $idClient;
+    $idMagasin = $res->fetchColumn();
+    return $idMagasin;
 }
 
 function listerGerants($conn) {
