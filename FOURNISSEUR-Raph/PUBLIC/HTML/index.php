@@ -106,22 +106,29 @@ $packages = GetPackages($conn, $clientId);
                                 <strong><?php echo htmlspecialchars($package['last_name'] . ' ' . $package['first_name']); ?></strong>
                             </td>
                             <td>
-                                <span style="padding: 3px 8px; border-radius: 3px; font-size: 12px; 
-                                      background-color: 
-                                        <?php 
-                                            switch(strtolower($package['package_status'])) {
-                                                case 'Delivered': echo '#d4edda; color: #155724;'; break;
-                                                case 'Picked Up': echo '#d4edda; color: #155724;'; break;
-                                                case 'Created': echo '#fff3cd; color: #856404;'; break;
-                                                case 'In Transit': echo '#fff3cd; color: #856404;'; break;
-                                                case 'Arrived at Hub': echo '#fff3cd; color: #856404;'; break;
-                                                case 'Out for Delivery': echo '#fff3cd; color: #856404;'; break;
-                                                case 'Delayed': echo '#f8d7da; color: #721c24;'; break;
-                                                case 'Delivery Failed': echo '#f8d7da; color: #721c24;'; break;
-                                                case 'Returned to Sender': echo '#f8d7da; color: #721c24;'; break;
-                                                default: echo '#e2e3e5; color: #383d41;';
-                                            }
-                                        ?>">
+                            <?php
+                                $status = strtolower($package['package_status']);
+                                switch($status) {
+                                    case 'delivered':
+                                    case 'picked up':
+                                        $style = 'background-color: #d4edda; color: #155724;';
+                                        break;
+                                    case 'created':
+                                    case 'in transit':
+                                    case 'arrived at hub':
+                                    case 'out for delivery':
+                                        $style = 'background-color: #fff3cd; color: #856404;';
+                                        break;
+                                    case 'delayed':
+                                    case 'delivery failed':
+                                    case 'returned to sender':
+                                        $style = 'background-color: #f8d7da; color: #721c24;';
+                                        break;
+                                    default:
+                                        $style = 'background-color: #e2e3e5; color: #383d41;';
+                                }
+                                ?>
+                                <span style="padding: 3px 8px; border-radius: 3px; font-size: 12px; <?php echo $style; ?>">
                                     <?php echo htmlspecialchars($package['package_status']); ?>
                                 </span>
                             </td>
