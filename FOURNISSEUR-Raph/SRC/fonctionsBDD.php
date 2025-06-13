@@ -41,7 +41,7 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
 }
 
 function enregistreMagasin($magasinName, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $connex) {
-    $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash, default_address) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash, :default_address) RETURNING id";
+    $sql = "INSERT INTO shops (name, owner_id, address, city, postal_code, country) VALUES (:name, :owner_id, :address, :city, :postal_code, :country) RETURNING id";
     $res = $connex->prepare($sql);
 
     $data = [
