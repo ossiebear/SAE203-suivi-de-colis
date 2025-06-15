@@ -59,12 +59,13 @@ function enregistreMagasinOwner($clientName, $clientFirstname, $accountEmail, $a
     return $idClient;
 }
 
-function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $latitude, $longitude, $connex) {
-    $sql = "INSERT INTO shops (name, category_id, owner_id, address, city, postal_code, country, latitude, longitude) VALUES (:name, :category_id, :owner_id, :address, :city, :postal_code, :country, :latitude, :longitude) RETURNING id";
+function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $latitude, $longitude, $connex) {
+    $sql = "INSERT INTO shops (name, parent_office_acores_id, category_id, owner_id, address, city, postal_code, country, latitude, longitude) VALUES (:name, :parent_office_acores_id, :category_id, :owner_id, :address, :city, :postal_code, :country, :latitude, :longitude) RETURNING id";
     $res = $connex->prepare($sql);
 
     $data = [
         ':name' => $magasinName,         // prénom
+        ':parent_office_acores_id' => $parentOffice,
         ':category_id' => $category_id,
         ':owner_id' => $ownerID,              // nom de famille
         ':address' => $addressMagasin,
@@ -80,10 +81,121 @@ function enregistreMagasin($magasinName, $category_id, $ownerID, $addressMagasin
     return $idMagasin;
 }
 
+function enregistreOwner($OwnerName, $OwnerFirstname, $accountEmail, $accountPhone, $accountPassword, $connex) {
+    $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash) RETURNING id";
+    $res = $connex->prepare($sql);
+
+    $data = [
+        ':first_name' => $OwnerName,         // prénom
+        ':last_name' => $OwnerFirstname,              // nom de famille
+        ':account_email' => $accountEmail,
+        ':account_phone_number' => $accountPhone,
+        ':account_password_hash' => $hashedPassword,
+    ];
+
+    $res->execute($data);
+    $idClient = $res->fetchColumn();
+    return $idClient;
+}
+
+function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $connex) {
+    try {
+        // Commencer une transaction pour assurer la cohérence des données
+        $connex->beginTransaction();
+        
+        // Vérifier si le client existe déjà
+        $sqlCheckClient = "SELECT id FROM clients WHERE first_name = :first_name AND last_name = :last_name";
+        $resCheck = $connex->prepare($sqlCheckClient);
+        $resCheck->execute([
+            ':first_name' => $clientFirstname,
+            ':last_name' => $clientName
+        ]);
+        
+        $clientId = $resCheck->fetchColumn();
+        
+        // Si le client n'existe pas, utiliser la fonction existante pour le créer
+        if (!$clientId) {
+            // Données par défaut pour un client créé via colis
+            $defaultEmail = strtolower($clientFirstname . '.' . $clientName . '@temp.com');
+            $defaultPassword = 'temp123'; 
+            $defaultPhone = '0000';
+            
+            // Réutiliser la fonction existante enregistreClient()
+            $clientId = enregistreClient($clientName, $clientFirstname, $defaultEmail, $defaultPhone, $defaultPassword, $destinationAddress, $connex);
+        }
+        
+        // Générer un numéro de suivi unique de 20 caractères (lettres et chiffres)
+        $trackingNumber = generateTrackingNumber();
+        
+        // Vérifier l'unicité du numéro de suivi
+        do {
+            $sqlCheckTracking = "SELECT COUNT(*) FROM packages WHERE tracking_number = :tracking_number";
+            $resCheckTracking = $connex->prepare($sqlCheckTracking);
+            $resCheckTracking->execute([':tracking_number' => $trackingNumber]);
+            $exists = $resCheckTracking->fetchColumn();
+            
+            if ($exists > 0) {
+                $trackingNumber = generateTrackingNumber(); // Générer un nouveau numéro si celui-ci existe déjà
+            }
+        } while ($exists > 0);
+        
+        // Insérer le colis
+        $sqlPackage = "INSERT INTO packages (item_name, recipient_client_id, delivery_address, expected_delivery_date, tracking_number, current_status_id, created_at) 
+                      VALUES (:item_name, :recipient_client_id, :delivery_address, :expected_delivery_date, :tracking_number, :current_status_id, NOW()) 
+                      RETURNING id";
+        $resPackage = $connex->prepare($sqlPackage);
+        
+        // Status ID 1 = "En préparation" (à adapter selon votre base de données)
+        $defaultStatusId = 1;
+        
+        $resPackage->execute([
+            ':item_name' => $itemName,
+            ':recipient_client_id' => $clientId,
+            ':delivery_address' => $destinationAddress,
+            ':expected_delivery_date' => $deliveryDate,
+            ':tracking_number' => $trackingNumber,
+            ':current_status_id' => $defaultStatusId
+        ]);
+        
+        $packageId = $resPackage->fetchColumn();
+        
+        // Valider la transaction
+        $connex->commit();
+        
+        // Retourner les informations du colis créé
+        return [
+            'colis_id' => $packageId,
+            'client_id' => $clientId,
+            'tracking_number' => $trackingNumber
+        ];
+        
+    } catch (Exception $e) {
+        // Annuler la transaction en cas d'erreur
+        $connex->rollback();
+        throw new Exception("Erreur lors de l'enregistrement du colis : " . $e->getMessage());
+    }
+}
+
+// Fonction pour générer un code de tracking de 20 caractères alphanumériques
+function generateTrackingNumber() {
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $trackingNumber = '';
+    
+    for ($i = 0; $i < 20; $i++) {
+        $trackingNumber .= $characters[mt_rand(0, strlen($characters) - 1)];
+    }
+    
+    return $trackingNumber;
+}
+
 function listerGerants($conn) {
     $sql = "SELECT id, first_name, last_name FROM shop_owners ORDER BY first_name, last_name";
-    $res = $conn->query($sql);
-    return $res;
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $gerants = $res->fetchAll();
+    return $gerants;
 }
 
 function ListerClients($conn) {
@@ -180,6 +292,15 @@ function CountOwnerMagasin($conn) {
     $res->execute();
     $result = $res->fetch();
     return $result['shop_owner_count'];
+}
+
+function GetParentOffice($conn, $ville) {
+    $sql = "SELECT d.acores_id, d.city FROM department_offices AS d 
+            JOIN shops AS s ON d.city = s.city";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $result = $res->fetch();
+    return $result['acores_id'];
 }
 
 function GetLocalisationMagasin($ville) {

@@ -20,8 +20,6 @@
             <form action="../../SRC/EnregistrerColi.php" method="post" autocomplete="off">
                 <label for="newItem">Nom de l'article *</label>
                 <input type="text" id="newItem" name="newItem" placeholder="Nom de l'article" required />
-                <label for="quantity">Quantité *</label>
-                <input type="number" id="quantity" name="quantity" placeholder="Quantité" min="1" required />
                 <label for="destinationAddress">Adresse de livraison *</label>
                 <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Adresse complète de livraison" required />
                 <label for="deliveryDate">Date de livraison prévue *</label>
@@ -32,12 +30,6 @@
                 <input type="text" id="clientFirstname" name="clientFirstname" placeholder="Prénom du client" required />
                 <button type="submit">Enregistrer le colis</button>
             </form>
-        </div>
-        <div style="margin-top: 20px; padding: 15px; background: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border-light);">
-            <h4 style="color: var(--text-primary); margin-top: 0;">ℹ️ Information</h4>
-            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
-                Si le client n'existe pas dans la base de données, il sera automatiquement créé avec les informations fournies.
-            </p>
         </div>
     </div>
     <script src="../JS/script.js"></script>

@@ -17,10 +17,11 @@ $pays = $_POST["pays"];
 $coordinates = GetLocalisationMagasin($villeLocation);
 $latitude = $coordinates['lat'];
 $longitude = $coordinates['lon'];
+$parentOffice = GetParentOffice($conn, $villeLocation);
 
 try {
     // Insérer le client d'abord
-    $idMagasin = enregistreMagasin($magasinName, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal ,$pays, $latitude, $longitude, $conn);
+    $idMagasin = enregistreMagasin($magasinName, $parentOffice, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $latitude, $longitude, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';
