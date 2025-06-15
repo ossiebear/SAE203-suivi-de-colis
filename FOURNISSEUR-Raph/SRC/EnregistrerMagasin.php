@@ -24,6 +24,7 @@ try {
     $idMagasin = enregistreMagasin($magasinName, $parentOffice, $categorieID, $ownerID, $addressMagasin, $villeLocation, $codePostal, $pays, $latitude, $longitude, $conn);
     if ($idMagasin) {
         echo'<h1>Le magasin à été enregistré avec succès</h1>';
+        echo '<p>'.$parentOffice.'</p>';
         echo'<p>ID du Magasin est ' . $idMagasin . '</p>';
     }
 

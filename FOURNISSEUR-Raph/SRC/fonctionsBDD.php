@@ -103,8 +103,15 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
             $defaultPassword = 'temp123'; 
             $defaultPhone = '0000';
             
-            // Réutiliser la fonction existante enregistreClient()
-            $clientId = enregistreClient($clientName, $clientFirstname, $defaultEmail, $defaultPhone, $defaultPassword, $destinationAddress, $connex);
+            $clientId = enregistreClient(
+                $clientName,           // clientName (nom de famille)
+                $clientFirstname,      // clientFirstname (prénom)  
+                $defaultEmail,         // accountEmail
+                $defaultPhone,         // accountPhone
+                $defaultPassword,      // accountPassword
+                $destinationAddress,   // defaultAddress
+                $connex               // connex
+            );
         }
         
         // Générer un numéro de suivi unique de 20 caractères (lettres et chiffres)
@@ -118,29 +125,34 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
             $exists = $resCheckTracking->fetchColumn();
             
             if ($exists > 0) {
-                $trackingNumber = generateTrackingNumber(); // Générer un nouveau numéro si celui-ci existe déjà
+                $trackingNumber = generateTrackingNumber();
             }
         } while ($exists > 0);
         
-        // Insérer le colis
-        $sqlPackage = "INSERT INTO packages (item_name, recipient_client_id, delivery_address, expected_delivery_date, tracking_number, current_status_id, created_at) 
-                      VALUES (:item_name, :recipient_client_id, :delivery_address, :expected_delivery_date, :tracking_number, :current_status_id, NOW()) 
+        // CORRECTION : Supprimer la colonne 'id' car elle est auto-générée
+        $sqlPackage = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, actual_delivery_date, tracking_number, current_status_id) 
+                      VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :actual_delivery_date, :tracking_number, :current_status_id) 
                       RETURNING id";
         $resPackage = $connex->prepare($sqlPackage);
         
-        // Status ID 1 = "En préparation" (à adapter selon votre base de données)
         $defaultStatusId = 1;
         
+        // CORRECTION : Supprimer le paramètre ':id'
         $resPackage->execute([
-            ':item_name' => $itemName,
-            ':recipient_client_id' => $clientId,
-            ':delivery_address' => $destinationAddress,
-            ':expected_delivery_date' => $deliveryDate,
-            ':tracking_number' => $trackingNumber,
-            ':current_status_id' => $defaultStatusId
+            ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,  // Nom complet du destinataire
+            ':recipient_client_id' => $clientId,                                  // ID du client
+            ':onpackage_destination_address' => $destinationAddress,              // Adresse de destination
+            ':actual_delivery_date' => $deliveryDate,                            // Date de livraison
+            ':tracking_number' => $trackingNumber,                               // Numéro de suivi
+            ':current_status_id' => $defaultStatusId                             // Statut actuel
         ]);
         
         $packageId = $resPackage->fetchColumn();
+        
+        // DEBUG : Vérifier que l'ID a été récupéré
+        if (!$packageId) {
+            throw new Exception("Erreur: Impossible de récupérer l'ID du package créé");
+        }
         
         // Valider la transaction
         $connex->commit();
