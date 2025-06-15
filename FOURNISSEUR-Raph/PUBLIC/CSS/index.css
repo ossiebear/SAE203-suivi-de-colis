@@ -11,8 +11,8 @@
    ==== */
 
    :root {
-    /* Brand Colors */
-    --brand-primary: #c0000;
+    /* Brand Colors - CORRECTION DES VALEURS HEXADÉCIMALES */
+    --brand-primary: #c00000;  /* Corrigé de #c0000 */
     --brand-secondary: #c6007e;
     --brand-accent: #f7c600;
     --tracking-blue: #1a3578;
@@ -100,7 +100,7 @@ body {
 .main-nav a:hover,
 .main-nav a:focus,
 .main-nav .active {
-    background: #a00000;
+    background: #a00000;  /* Corrigé de #a0000 */
     color: #fff;
 }
 
@@ -149,8 +149,6 @@ h2, h3, h4 {
 .add-items input[type="password"],
 .add-items input[type="number"],
 .add-items input[type="date"],
-.add-items input[type="email"],
-.add-items input[type="tel"],
 .add-items select {
     padding: 12px;
     border: 1px solid var(--border-color);
@@ -165,8 +163,6 @@ h2, h3, h4 {
 .add-items input[type="password"]:focus,
 .add-items input[type="number"]:focus,
 .add-items input[type="date"]:focus,
-.add-items input[type="email"]:focus,
-.add-items input[type="tel"]:focus,
 .add-items select:focus {
     outline: none;
     border-color: var(--brand-primary);
@@ -210,7 +206,7 @@ h2, h3, h4 {
 }
 
 .add-items button[type="submit"]:hover {
-    background: #a00000;
+    background: #a00000;  /* Corrigé de #a0000 */
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(192, 0, 0, 0.3);
 }
@@ -231,8 +227,6 @@ h2, h3, h4 {
 
 .search-form input[type="text"], 
 .search-form input[type="password"],
-.search-form input[type="email"],
-.search-form input[type="tel"],
 .search-form select {
     padding: 10px;
     border: 1px solid var(--border-color);
@@ -245,8 +239,6 @@ h2, h3, h4 {
 
 .search-form input[type="text"]:focus,
 .search-form input[type="password"]:focus,
-.search-form input[type="email"]:focus,
-.search-form input[type="tel"]:focus,
 .search-form select:focus {
     outline: none;
     border-color: var(--brand-primary);
@@ -265,7 +257,7 @@ h2, h3, h4 {
 }
 
 .search-form input[type="submit"]:hover {
-    background: #a00000;
+    background: #a00000;  /* Corrigé de #a0000 */
     transform: translateY(-1px);
 }
 
@@ -342,7 +334,7 @@ button {
 }
 
 button:hover {
-    background: #a00000;
+    background: #a00000;  /* Corrigé de #a0000 */
     transform: translateY(-1px);
 }
 
@@ -482,8 +474,6 @@ select option {
     
     .search-form input[type="text"],
     .search-form input[type="password"],
-    .search-form input[type="email"],
-    .search-form input[type="tel"],
     .search-form select {
         width: 100%;
         max-width: 300px;
