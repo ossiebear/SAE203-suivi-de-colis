@@ -1,18 +1,18 @@
 
 /**
- * =================================================================
+ * ====
  * UNIFIED STYLES - DARK MODE DEFAULT
  * Styles unifiés basés sur le design de la landing page
- * =================================================================
+ * ====
  */
 
-/* ================================
+/* ====
    CSS CUSTOM PROPERTIES (VARIABLES)
-   ================================ */
+   ==== */
 
    :root {
     /* Brand Colors */
-    --brand-primary: #c00000;
+    --brand-primary: #c0000;
     --brand-secondary: #c6007e;
     --brand-accent: #f7c600;
     --tracking-blue: #1a3578;
@@ -36,9 +36,9 @@
     --header-bar-height: 4px;
 }
 
-/* ================================
+/* ====
    BASE STYLES & RESET
-   ================================ */
+   ==== */
 
 /* Brand color bar at top */
 body::before {
@@ -63,9 +63,9 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* ================================
+/* ====
    NAVIGATION STYLES
-   ================================ */
+   ==== */
 
 .main-nav {
     background: var(--brand-primary);
@@ -104,9 +104,9 @@ body {
     color: #fff;
 }
 
-/* ================================
+/* ====
    CONTAINER & LAYOUT
-   ================================ */
+   ==== */
 
 .container {
     background: var(--bg-secondary);
@@ -128,9 +128,9 @@ h2, h3, h4 {
     color: var(--text-primary);
 }
 
-/* ================================
+/* ====
    FORM STYLES
-   ================================ */
+   ==== */
 
 /* Form Creation Styles */
 .add-items form {
@@ -149,6 +149,8 @@ h2, h3, h4 {
 .add-items input[type="password"],
 .add-items input[type="number"],
 .add-items input[type="date"],
+.add-items input[type="email"],
+.add-items input[type="tel"],
 .add-items select {
     padding: 12px;
     border: 1px solid var(--border-color);
@@ -163,6 +165,8 @@ h2, h3, h4 {
 .add-items input[type="password"]:focus,
 .add-items input[type="number"]:focus,
 .add-items input[type="date"]:focus,
+.add-items input[type="email"]:focus,
+.add-items input[type="tel"]:focus,
 .add-items select:focus {
     outline: none;
     border-color: var(--brand-primary);
@@ -211,9 +215,9 @@ h2, h3, h4 {
     box-shadow: 0 4px 12px rgba(192, 0, 0, 0.3);
 }
 
-/* ================================
+/* ====
    SEARCH FORM STYLES
-   ================================ */
+   ==== */
 
 .search-form {
     background: var(--bg-secondary);
@@ -227,6 +231,8 @@ h2, h3, h4 {
 
 .search-form input[type="text"], 
 .search-form input[type="password"],
+.search-form input[type="email"],
+.search-form input[type="tel"],
 .search-form select {
     padding: 10px;
     border: 1px solid var(--border-color);
@@ -239,6 +245,8 @@ h2, h3, h4 {
 
 .search-form input[type="text"]:focus,
 .search-form input[type="password"]:focus,
+.search-form input[type="email"]:focus,
+.search-form input[type="tel"]:focus,
 .search-form select:focus {
     outline: none;
     border-color: var(--brand-primary);
@@ -261,9 +269,9 @@ h2, h3, h4 {
     transform: translateY(-1px);
 }
 
-/* ================================
+/* ====
    TABLE STYLES
-   ================================ */
+   ==== */
 
 .results-table {
     width: 100%;
@@ -298,9 +306,9 @@ h2, h3, h4 {
     background: var(--border-light);
 }
 
-/* ================================
+/* ====
    CLIENT LIST SPECIFIC STYLES
-   ================================ */
+   ==== */
 
 .filter-section {
     background: var(--bg-secondary);
@@ -394,9 +402,9 @@ tr:hover td {
     font-weight: 600;
 }
 
-/* ================================
+/* ====
    STATUS BADGES (for package status)
-   ================================ */
+   ==== */
 
 .status-badge {
     padding: 3px 8px;
@@ -432,9 +440,9 @@ tr:hover td {
     color: #383d41;
 }
 
-/* ================================
+/* ====
    UTILITY CLASSES
-   ================================ */
+   ==== */
 
 .no-results,
 .no-data {
@@ -463,9 +471,9 @@ select option {
     color: var(--text-secondary);
 }
 
-/* ================================
+/* ====
    RESPONSIVE DESIGN
-   ================================ */
+   ==== */
 
 @media (max-width: 900px) {
     .stats {
@@ -474,6 +482,8 @@ select option {
     
     .search-form input[type="text"],
     .search-form input[type="password"],
+    .search-form input[type="email"],
+    .search-form input[type="tel"],
     .search-form select {
         width: 100%;
         max-width: 300px;

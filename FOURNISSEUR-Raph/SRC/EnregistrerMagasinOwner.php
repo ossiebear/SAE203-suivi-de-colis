@@ -26,5 +26,7 @@ try {
     echo '<p>' . $e->getMessage() . '</p>';
 }
 
+echo '<a href="../PUBLIC/HTML&PHP/injectionMagasin.php"><p>Retour à la Page de création</p></a>';
+
 deconnexionBDD($conn);
 ?>

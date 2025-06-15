@@ -32,9 +32,9 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
                 <label for="shopFirstname">Prénom du Gérant du Magasin</label>
                 <input type="text" id="shopFirstname" name="shopFirstname" placeholder="Entrez le prénom" required />
                 <label for="emailAddress">Adresse Email</label>
-                <input type="text" id="emailAddress" name="emailAddress" placeholder="Entrez votre email" required />
+                <input type="email" id="emailAddress" name="emailAddress" placeholder="Entrez votre email" required />
                 <label for="phoneNumber">Numéro de Téléphone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Entrez votre numéro de téléphone" required />
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Entrez votre numéro de téléphone" required />
                 <label for="password">Entrez un Mot de passe</label>
                 <input type="password" id="password" name="password" placeholder="Tapez votre mot de passe" required />
                 <label for="destinationAddress">Adresse de livraison</label>
