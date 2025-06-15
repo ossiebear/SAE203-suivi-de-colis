@@ -81,25 +81,6 @@ function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, 
     return $idMagasin;
 }
 
-function enregistreOwner($OwnerName, $OwnerFirstname, $accountEmail, $accountPhone, $accountPassword, $connex) {
-    $hashedPassword = password_hash($accountPassword, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO shop_owners (first_name, last_name, account_email, account_phone_number, account_password_hash) VALUES (:first_name, :last_name, :account_email, :account_phone_number, :account_password_hash) RETURNING id";
-    $res = $connex->prepare($sql);
-
-    $data = [
-        ':first_name' => $OwnerName,         // prénom
-        ':last_name' => $OwnerFirstname,              // nom de famille
-        ':account_email' => $accountEmail,
-        ':account_phone_number' => $accountPhone,
-        ':account_password_hash' => $hashedPassword,
-    ];
-
-    $res->execute($data);
-    $idClient = $res->fetchColumn();
-    return $idClient;
-}
-
 function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $connex) {
     try {
         // Commencer une transaction pour assurer la cohérence des données
