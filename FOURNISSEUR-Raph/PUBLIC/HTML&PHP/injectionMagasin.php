@@ -17,16 +17,17 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
 <body>
     <nav class="main-nav">
         <ul>
-            <li><a href="injectionAccueil.html" class="active">Accueil</a></li>
+            <li><a href="index.php" class="active">Accueil</a></li>
             <li><a href="injectionClient.html">Création Client</a></li>
             <li><a href="injectionOwner.html">Création Owner</a></li>
             <li><a href="injectionColi.html">Création Colis</a></li>
             <li><a href="injectionMagasin.php">Création Magasin</a></li>
-            <li><a href="index.php">Liste des Colis</a></li>
+            <li><a href="gestionColi.php">Liste des Colis</a></li>
+            <li><a href="listeClient.php">Liste des Clients</a></li>
         </ul>
     </nav>
 
-    <h1>Création d'un Directeur de Magasin</h1>
+    <h1>🏪 Création d'un Directeur de Magasin</h1>
     <div class="container">
         <div class="add-items">
             <form action="../../SRC/EnregistrerMagasinOwner.php" method="post" autocomplete="off">
@@ -47,7 +48,7 @@ $conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
         </div>
     </div>
 
-    <h1>Création d'un Magasin</h1>
+    <h1>🏪 Création d'un Magasin</h1>
     <div class="container">
         <div class="add-items">
             <form action="../../SRC/EnregistrerMagasin.php" method="post" autocomplete="off">

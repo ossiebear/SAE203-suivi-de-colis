@@ -1,3 +1,12 @@
+<?php 
+require_once '../../SRC/fonctionsConnexion.php';
+require_once '../../SRC/fonctionsBDD.php';
+require_once '../../../DATA/DATABASE/CONFIG/config.php';
+
+$conn = connexionBDD('../../../DATA/DATABASE/CONFIG/config.php');
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -222,12 +231,13 @@
     <!-- Navigation principale -->
     <nav class="main-nav">
         <ul>
-            <li><a href="injectionAccueil.html" class="active">Accueil</a></li>
+            <li><a href="index.php" class="active">Accueil</a></li>
             <li><a href="injectionClient.html">Création Client</a></li>
             <li><a href="injectionOwner.html">Création Owner</a></li>
             <li><a href="injectionColi.html">Création Colis</a></li>
             <li><a href="injectionMagasin.php">Création Magasin</a></li>
-            <li><a href="index.php">Liste des Colis</a></li>
+            <li><a href="gestionColi.php">Liste des Colis</a></li>
+            <li><a href="listeClient.php">Liste des Clients</a></li>
         </ul>
     </nav>
 
@@ -245,19 +255,39 @@
         <div class="stats-overview">
             <div class="stat-overview-card">
                 <h4>📦 Colis Actifs</h4>
-                <p class="stat-number">--</p>
+                <p class="stat-number">
+                    <?php 
+                    $nb = CountPackages($conn);
+                    echo $nb;
+                    ?>
+                </p>
             </div>
             <div class="stat-overview-card">
                 <h4>👥 Clients</h4>
-                <p class="stat-number">--</p>
+                <p class="stat-number">
+                    <?php 
+                    $nb = CountClients($conn);
+                    echo $nb;
+                    ?>
+                </p>
             </div>
             <div class="stat-overview-card">
                 <h4>🏪 Magasins</h4>
-                <p class="stat-number">--</p>
+                <p class="stat-number">
+                    <?php 
+                    $nb = CountMagasin($conn);
+                    echo $nb;
+                    ?>
+                </p>
             </div>
             <div class="stat-overview-card">
                 <h4>👨‍💼 Propriétaires</h4>
-                <p class="stat-number">--</p>
+                <p class="stat-number">
+                <?php 
+                    $nb = CountOwnerMagasin($conn);
+                    echo $nb;
+                    ?>
+                </p>
             </div>
         </div>
 

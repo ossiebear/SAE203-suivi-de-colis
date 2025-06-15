@@ -107,17 +107,79 @@ function GetPackages($conn, $clientId = 0) {
     // Requête pour récupérer les colis (tous ou filtrés par client)
     if ($clientId > 0) {
         // Colis d'un client spécifique
-        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name as package_status FROM packages p JOIN clients c ON p.recipient_client_id = c.id JOIN package_statuses ps ON p.current_status_id = ps.id WHERE p.recipient_client_id = :recipient_client_id ORDER BY p.created_at DESC";
+        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name AS package_status 
+        FROM packages p 
+        JOIN clients c ON p.recipient_client_id = c.id 
+        JOIN package_statuses ps ON p.current_status_id = ps.id 
+        WHERE p.recipient_client_id = :recipient_client_id 
+        ORDER BY p.created_at DESC";
         $res = $conn->prepare($sql);
         $res->execute([':recipient_client_id' => $clientId]);
     } else {
         // Tous les colis
-        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name as package_status FROM packages p JOIN clients c ON p.recipient_client_id = c.id JOIN package_statuses ps ON p.current_status_id = ps.id ORDER BY p.created_at DESC";
+        $sql = "SELECT p.*, c.last_name, c.first_name, ps.status_name AS package_status 
+        FROM packages p 
+        JOIN clients c ON p.recipient_client_id = c.id 
+        JOIN package_statuses ps ON p.current_status_id = ps.id 
+        ORDER BY p.created_at DESC";
         $res = $conn->prepare($sql);
         $res->execute();
     }
     $packages = $res->fetchAll();
     return $packages;
+}
+
+// Fonction pour récupérer les clients avec filtre de recherche
+// le ILIKE sert a faire une recherche sans avoir a tout taper dans PostgreSQL
+function GetClientsWithSearch($conn, $searchTerm = '') {
+    if (!empty($searchTerm)) {
+        $sql = "SELECT * FROM clients 
+                WHERE first_name ILIKE :search_term 
+                OR last_name ILIKE :search_term 
+                OR account_email ILIKE :search_term 
+                OR account_phone_number ILIKE :search_term 
+                OR default_address ILIKE :search_term
+                ORDER BY last_name, first_name";
+        $res = $conn->prepare($sql);
+        $res->execute([':search_term' => '%' . $searchTerm . '%']);
+    } else {
+        $sql = "SELECT * FROM clients ORDER BY last_name, first_name";
+        $res = $conn->prepare($sql);
+        $res->execute();
+    }
+    return $res->fetchAll();
+}
+
+function CountClients($conn) {
+    $sql = "SELECT COUNT(*) as client_count FROM clients";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $result = $res->fetch();
+    return $result['client_count'];
+}
+
+function CountPackages($conn) {
+    $sql = "SELECT COUNT(*) as package_count FROM packages";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $result = $res->fetch();
+    return $result['package_count'];
+}
+
+function CountMagasin($conn) {
+    $sql = "SELECT COUNT(*) as shops_count FROM shops";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $result = $res->fetch();
+    return $result['shops_count'];
+}
+
+function CountOwnerMagasin($conn) {
+    $sql = "SELECT COUNT(*) as shop_owner_count FROM shop_owners";
+    $res = $conn->prepare($sql);
+    $res->execute();
+    $result = $res->fetch();
+    return $result['shop_owner_count'];
 }
 
 function GetLocalisationMagasin($ville) {
