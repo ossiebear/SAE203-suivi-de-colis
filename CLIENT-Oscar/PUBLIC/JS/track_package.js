@@ -1,56 +1,88 @@
-// track_package.js - Frontend JavaScript for package tracking
-// SAE203 Package Tracking System
+/**
+ * Package Tracking Frontend JavaScript
+ * 
+ * SAE203 Package Tracking System - Client-Side Tracking Interface
+ * Handles package tracking form submission, API communication, and results display
+ * 
+ * Features:
+ * - Real-time package tracking with live API calls
+ * - Input validation and formatting
+ * - Comprehensive package information display
+ * - Transit history visualization
+ * - Error handling and user feedback
+ * - Responsive interface updates
+ * 
+ * Author: Oscar Collins, SAE203 Group A2
+ * Date: 2025
+ * AI usage: Written manually, AI comments and reorganisation
+ * 
+ */
 
+// Initialize tracking functionality when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements for better performance
     const trackingForm = document.getElementById('trackingForm');
     const trackingNumberInput = document.getElementById('trackingNumber');
     const loadingIndicator = document.getElementById('loadingIndicator');
     const errorMessage = document.getElementById('errorMessage');
     const trackingResults = document.getElementById('trackingResults');
 
-    // Handle form submission
+    /**
+     * Handle form submission for package tracking
+     * Prevents default form submission and triggers custom tracking logic
+     */
     trackingForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         const trackingNumber = trackingNumberInput.value.trim();
         
+        // Validate tracking number input
         if (!trackingNumber) {
             showError('Veuillez entrer un numéro de suivi');
             return;
         }
         
+        // Initiate package tracking
         trackPackage(trackingNumber);
     });
 
-    // Auto-format tracking number input (optional)
+    /**
+     * Auto-format tracking number input for better user experience
+     * Removes invalid characters and enforces length limits
+     */
     trackingNumberInput.addEventListener('input', function(e) {
         // Remove any non-alphanumeric characters and convert to uppercase
         let value = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
         
-        // Limit to 20 characters
+        // Limit to 20 characters (standard tracking number length)
         if (value.length > 20) {
             value = value.substring(0, 20);
         }
         
         e.target.value = value;
-    });
-
-    /**
+    });    /**
      * Track a package by its tracking number
+     * Makes API call to backend and handles response/error states
+     * 
      * @param {string} trackingNumber - The tracking number to search for
+     * @description Communicates with the backend API to retrieve package information
      */
     async function trackPackage(trackingNumber) {
+        // Show loading state to user
         showLoading();
         hideError();
-        hideResults();        try {
+        hideResults();
+        
+        try {
+            // Make API call to tracking backend
             const response = await fetch(`../../SRC/track_package.php?tracking_number=${encodeURIComponent(trackingNumber)}`);
             
-            // Check if response is ok
+            // Validate HTTP response status
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
-            // Check if response is JSON
+            // Validate response content type
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 const text = await response.text();
@@ -58,10 +90,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Le serveur a retourné une réponse invalide');
             }
             
+            // Parse JSON response
             const data = await response.json();
             
             hideLoading();
             
+            // Handle API response
             if (data.success) {
                 displayPackageInfo(data.package);
             } else {
@@ -72,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error tracking package:', error);
             showError('Erreur de connexion. Veuillez réessayer plus tard.');
         }
-    }    /**
+    }/**
      * Display package information in the results section
      * @param {Object} packageData - The package data from the API
      */
