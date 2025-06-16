@@ -82,7 +82,6 @@ function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, 
 }
 
 function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $connex) {
-    $connex->beginTransaction();
     try {
         // Vérifier si le client existe
         $sqlCheckClient = "SELECT id FROM clients WHERE first_name = :first_name AND last_name = :last_name";
@@ -116,12 +115,13 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
         ]);
         
         $packageId = $res->fetchColumn();
-        $connex->commit();
-        
-        return ['colis_id' => $packageId, 'client_id' => $clientId, 'tracking_number' => $trackingNumber];
+        return [
+            'colis_id' => $packageId,
+            'client_id' => $clientId,
+            'tracking_number' => $trackingNumber
+        ];
         
     } catch (Exception $e) {
-        $connex->rollback();
         throw new Exception("Erreur : " . $e->getMessage());
     }
 }
