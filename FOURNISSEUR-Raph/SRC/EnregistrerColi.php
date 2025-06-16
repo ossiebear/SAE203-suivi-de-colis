@@ -25,7 +25,6 @@ try {
         echo '<p><strong>ID du Client :</strong> ' . $result['client_id'] . '</p>';
         echo '<p><strong>Numéro de suivi :</strong> ' . $result['tracking_number'] . '</p>';
         echo '<p><strong>Article :</strong> ' . htmlspecialchars($itemName) . '</p>';
-        echo '<p><strong>Quantité :</strong> ' . htmlspecialchars($quantity) . '</p>';
         echo '<p><strong>Client :</strong> ' . htmlspecialchars($clientFirstname . ' ' . $clientName) . '</p>';
         echo '<p><strong>Adresse de livraison :</strong> ' . htmlspecialchars($destinationAddress) . '</p>';
         echo '<p><strong>Date de livraison prévue :</strong> ' . htmlspecialchars($deliveryDate) . '</p>';

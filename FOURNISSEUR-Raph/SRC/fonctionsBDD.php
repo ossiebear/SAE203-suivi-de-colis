@@ -104,7 +104,7 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
         
         // Insérer colis
         $sql = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, estimated_delivery_date, tracking_number, current_status_id) 
-                VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, current_status_id) RETURNING id";
+                VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, :current_status_id) RETURNING id";
         $res = $connex->prepare($sql);
         $res->execute([
             ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,
