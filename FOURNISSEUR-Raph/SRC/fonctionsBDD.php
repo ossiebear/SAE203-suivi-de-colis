@@ -103,15 +103,16 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
         } while ($resCheck->fetchColumn() > 0);
         
         // Insérer colis
-        $sql = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, actual_delivery_date, tracking_number, current_status_id) 
-                VALUES (:name, :client_id, :address, :date, :tracking, 1) RETURNING id";
+        $sql = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, estimated_delivery_date, tracking_number, current_status_id) 
+                VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, current_status_id) RETURNING id";
         $res = $connex->prepare($sql);
         $res->execute([
-            ':name' => $clientFirstname . ' ' . $clientName,
-            ':client_id' => $clientId,
-            ':address' => $destinationAddress,
-            ':date' => $deliveryDate,
-            ':tracking' => $trackingNumber
+            ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,
+            ':recipient_client_id' => $clientId,
+            ':onpackage_destination_address' => $destinationAddress,
+            ':estimated_delivery_date' => $deliveryDate,
+            ':trackitracking_numberng' => $trackingNumber,
+            ':current_status_id' => 1
         ]);
         
         $packageId = $res->fetchColumn();
