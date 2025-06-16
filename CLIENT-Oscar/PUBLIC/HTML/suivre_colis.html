@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
+<head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
     <title>Example Title</title>
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="icon" type="image/png" href="../IMG/redboot_small.png">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-    <header class="lp-header">
-        <div class="lp-header-top">
+    <header class="lp-header">        <div class="lp-header-top">
             <div class="lp-header-center">
-                <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
-                <h1 class="lp-title">Redboot</h1>
+                <a href="index.html" class="logo-link">
+                    <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
+                    <h1 class="lp-title">Redboot</h1>
+                </a>
             </div>
             
             <div class="lp-header-actions">
@@ -74,13 +79,41 @@
             </ul>
             <div class="lp-mail">
                 <a href="mailto:contact@redboot.duck">📧contact@redboot.duck</a>
+            </div>        </nav></header>      <main>
+        <div class="shipping-form-container" style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <h2>Suivre un colis</h2>
+              <div class="location-input-group" style="display: flex; justify-content: center;">
+                <div class="location-input" style="width: 100%; max-width: 400px;">
+                    <label for="tracking-code">Code de suivi</label>
+                    <input type="text" id="tracking-code" name="tracking-code" placeholder="Entrez votre code de suivi" class="location-textbox">
+                </div>
             </div>
-        </nav></header>
-      <main>
-        <!-- Content sections would go here -->
-    </main>
-    
-    <!-- External JavaScript -->
+              <!-- Submit Button -->
+            <div class="submit-section">
+                <button type="button" id="track-parcel-btn" class="submit-btn" onclick="trackParcel()">
+                    Suivre le colis
+                </button>
+            </div>
+              <!-- Map Container -->
+            <div class="map-section" id="map-section" style="display: none;">
+                <h3>Visualisation du chemin</h3>                <div class="map-container">
+                    <div id="map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+                    <div class="journey-steps">
+                        <h4>Statut du colis</h4>
+                        <ul id="journey-list" class="steps-list">
+                            <!-- Tracking status will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>      <!-- External JavaScript -->
     <script src="../JS/index.js"></script>
+    <script src="../JS/send_parcel.js"></script>
+    <script src="../JS/autocomplete/autocomplete.js"></script>
+    
+    <!-- Map JavaScript -->
+    <script src="../JS/map/map-ini.js"></script>
+    <script src="../JS/map/map-render.js"></script>
 </body>
 </html>

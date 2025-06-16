@@ -271,12 +271,26 @@ document.addEventListener('DOMContentLoaded', function() {
 function submitPath() {
     console.group('🚀 Submitting Path Data');
     
+    // Validate the form first
+    if (typeof validateForm === 'function' && !validateForm()) {
+        console.error('❌ Form validation failed');
+        console.groupEnd();
+        return;
+    }
+    
     // Validate that both locations are selected
     if (!selectedData.start || !selectedData.destination) {
         console.error('❌ Both start and destination locations must be selected');
         alert('Veuillez sélectionner un point de départ et une destination.');
         console.groupEnd();
         return;
+    }
+    
+    // Collect all form data
+    let packageData = {};
+    if (typeof collectFormData === 'function') {
+        packageData = collectFormData();
+        console.log('📦 Package data collected:', packageData);
     }
     
     // Get the types from the input attributes
