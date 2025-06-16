@@ -10,14 +10,16 @@ $conn = connexionBDD('../../DATA/DATABASE/CONFIG/config.php');
 $itemName = $_POST["newItem"];
 // Vérifier si quantity existe dans le formulaire, sinon utiliser 1 par défaut
 $quantity = isset($_POST["quantity"]) ? $_POST["quantity"] : 1;
+$senderAddress = $_POST["senderAddress"];
 $destinationAddress = $_POST["destinationAddress"];
 $deliveryDate = $_POST["deliveryDate"];
+$senderName = $_POST["senderName"];
 $clientName = $_POST["clientName"];
 $clientFirstname = $_POST["clientFirstname"];
 
 try {
     // Enregistrer le colis
-    $result = enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $conn);
+    $result = enregistreColi($itemName, $senderAddress, $destinationAddress, $deliveryDate, $senderName, $clientName, $clientFirstname, $conn);
     
     if ($result) {
         echo '<h1>Le colis a été enregistré avec succès</h1>';

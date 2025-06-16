@@ -20,10 +20,14 @@
             <form action="../../SRC/EnregistrerColi.php" method="post" autocomplete="off">
                 <label for="newItem">Nom de l'article *</label>
                 <input type="text" id="newItem" name="newItem" placeholder="Nom de l'article" required />
+                <label for="senderAddress">Adresse de départ *</label>
+                <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Adresse complète de livraison" required />
                 <label for="destinationAddress">Adresse de livraison *</label>
                 <input type="text" id="destinationAddress" name="destinationAddress" placeholder="Adresse complète de livraison" required />
                 <label for="deliveryDate">Date de livraison prévue *</label>
                 <input type="date" id="deliveryDate" name="deliveryDate" required />
+                <label for="senderName">Nom de l'envoyeur *</label>
+                <input type="text" id="clientName" name="clientName" placeholder="Nom de famille du client" required />
                 <label for="clientName">Nom du client *</label>
                 <input type="text" id="clientName" name="clientName" placeholder="Nom de famille du client" required />
                 <label for="clientFirstname">Prénom du client *</label>

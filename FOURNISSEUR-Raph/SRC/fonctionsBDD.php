@@ -81,7 +81,7 @@ function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, 
     return $idMagasin;
 }
 
-function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $connex) {
+function enregistreColi($itemName, $senderAddress, $destinationAddress, $deliveryDate, $senderName, $clientName, $clientFirstname, $connex) {
     try {
         // Vérifier si le client existe
         $sqlCheckClient = "SELECT id FROM clients WHERE first_name = :first_name AND last_name = :last_name";
@@ -102,18 +102,20 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
         } while ($resCheck->fetchColumn() > 0);
         
         // Insérer colis
-        $sql = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, estimated_delivery_date, tracking_number, current_status_id) 
-                VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, :current_status_id) RETURNING id";
+        $sql = "INSERT INTO packages (onpackage_recipient_name, onpackage_sender_name, onpackage_sender_address, recipient_client_id, onpackage_destination_address, estimated_delivery_date, tracking_number, current_status_id) 
+                VALUES (:onpackage_recipient_name, :onpackage_sender_name, :onpackage_sender_address, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, :current_status_id) RETURNING id";
         $res = $connex->prepare($sql);
         $res->execute([
             ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,
+            ':onpackage_sender_address' => $senderAddress,
+            ':onpackage_sender_name' => $senderName,
             ':recipient_client_id' => $clientId,
             ':onpackage_destination_address' => $destinationAddress,
             ':estimated_delivery_date' => $deliveryDate,
             ':tracking_number' => $trackingNumber,
             ':current_status_id' => 1
         ]);
-        
+
         $packageId = $res->fetchColumn();
         return [
             'colis_id' => $packageId,
