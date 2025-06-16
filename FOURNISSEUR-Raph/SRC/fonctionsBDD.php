@@ -82,101 +82,55 @@ function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, 
 }
 
 function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientName, $clientFirstname, $connex) {
+    $connex->beginTransaction();
     try {
-        // Commencer une transaction pour assurer la cohérence des données
-        $connex->beginTransaction();
-        
-        // Vérifier si le client existe déjà
+        // Vérifier si le client existe
         $sqlCheckClient = "SELECT id FROM clients WHERE first_name = :first_name AND last_name = :last_name";
         $resCheck = $connex->prepare($sqlCheckClient);
-        $resCheck->execute([
-            ':first_name' => $clientFirstname,
-            ':last_name' => $clientName
-        ]);
-        
+        $resCheck->execute([':first_name' => $clientFirstname, ':last_name' => $clientName]);
         $clientId = $resCheck->fetchColumn();
         
-        // Si le client n'existe pas, utiliser la fonction existante pour le créer
         if (!$clientId) {
-            // Données par défaut pour un client créé via colis
-            $defaultEmail = strtolower($clientFirstname . '.' . $clientName . '@temp.com');
-            $defaultPassword = 'temp123'; 
-            $defaultPhone = '0000';
-            
-            $clientId = enregistreClient(
-                $clientName,           // clientName (nom de famille)
-                $clientFirstname,      // clientFirstname (prénom)  
-                $defaultEmail,         // accountEmail
-                $defaultPhone,         // accountPhone
-                $defaultPassword,      // accountPassword
-                $destinationAddress,   // defaultAddress
-                $connex               // connex
-            );
+            throw new Exception("Client non trouvé : $clientFirstname $clientName");
         }
         
-        // Générer un numéro de suivi unique de 20 caractères (lettres et chiffres)
-        $trackingNumber = generateTrackingNumber();
-        
-        // Vérifier l'unicité du numéro de suivi
+        // Générer numéro de suivi unique
         do {
-            $sqlCheckTracking = "SELECT COUNT(*) FROM packages WHERE tracking_number = :tracking_number";
-            $resCheckTracking = $connex->prepare($sqlCheckTracking);
-            $resCheckTracking->execute([':tracking_number' => $trackingNumber]);
-            $exists = $resCheckTracking->fetchColumn();
-            
-            if ($exists > 0) {
-                $trackingNumber = generateTrackingNumber();
-            }
-        } while ($exists > 0);
+            $trackingNumber = generateTrackingNumber();
+            $sqlCheck = "SELECT COUNT(*) FROM packages WHERE tracking_number = :tracking_number";
+            $resCheck = $connex->prepare($sqlCheck);
+            $resCheck->execute([':tracking_number' => $trackingNumber]);
+        } while ($resCheck->fetchColumn() > 0);
         
-        // CORRECTION : Supprimer la colonne 'id' car elle est auto-générée
-        $sqlPackage = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, actual_delivery_date, tracking_number, current_status_id) 
-                      VALUES (:onpackage_recipient_name, :recipient_client_id, :onpackage_destination_address, :actual_delivery_date, :tracking_number, :current_status_id) 
-                      RETURNING id";
-        $resPackage = $connex->prepare($sqlPackage);
-        
-        $defaultStatusId = 1;
-        
-        // CORRECTION : Supprimer le paramètre ':id'
-        $resPackage->execute([
-            ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,  // Nom complet du destinataire
-            ':recipient_client_id' => $clientId,                                  // ID du client
-            ':onpackage_destination_address' => $destinationAddress,              // Adresse de destination
-            ':actual_delivery_date' => $deliveryDate,                            // Date de livraison
-            ':tracking_number' => $trackingNumber,                               // Numéro de suivi
-            ':current_status_id' => $defaultStatusId                             // Statut actuel
+        // Insérer colis
+        $sql = "INSERT INTO packages (onpackage_recipient_name, recipient_client_id, onpackage_destination_address, actual_delivery_date, tracking_number, current_status_id) 
+                VALUES (:name, :client_id, :address, :date, :tracking, 1) RETURNING id";
+        $res = $connex->prepare($sql);
+        $res->execute([
+            ':name' => $clientFirstname . ' ' . $clientName,
+            ':client_id' => $clientId,
+            ':address' => $destinationAddress,
+            ':date' => $deliveryDate,
+            ':tracking' => $trackingNumber
         ]);
         
-        $packageId = $resPackage->fetchColumn();
-        
-        // DEBUG : Vérifier que l'ID a été récupéré
-        if (!$packageId) {
-            throw new Exception("Erreur: Impossible de récupérer l'ID du package créé");
-        }
-        
-        // Valider la transaction
+        $packageId = $res->fetchColumn();
         $connex->commit();
         
-        // Retourner les informations du colis créé
-        return [
-            'colis_id' => $packageId,
-            'client_id' => $clientId,
-            'tracking_number' => $trackingNumber
-        ];
+        return ['colis_id' => $packageId, 'client_id' => $clientId, 'tracking_number' => $trackingNumber];
         
     } catch (Exception $e) {
-        // Annuler la transaction en cas d'erreur
         $connex->rollback();
-        throw new Exception("Erreur lors de l'enregistrement du colis : " . $e->getMessage());
+        throw new Exception("Erreur : " . $e->getMessage());
     }
 }
 
 // Fonction pour générer un code de tracking de 20 caractères alphanumériques
 function generateTrackingNumber() {
-    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $characters = '0123456789ABCDEF';
     $trackingNumber = '';
     
-    for ($i = 0; $i < 20; $i++) {
+    for ($i = 0; $i < 12; $i++) {
         $trackingNumber .= $characters[mt_rand(0, strlen($characters) - 1)];
     }
     
