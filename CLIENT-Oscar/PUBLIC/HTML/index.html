@@ -1,24 +1,56 @@
+<!--
+    SAE203 Package Tracking System - Main Landing Page
+    
+    This is the primary entry point for the Redboot package tracking application.
+    Provides navigation to all main features: tracking, sending, and modifying packages.
+    
+    Features:
+    - Responsive design with dark mode support
+    - Multi-user type selection (Client, Shop, Delivery)
+    - Quick package tracking interface
+    - Promotional sections highlighting services
+    
+    Author: Oscar Collins, SAE203 Group A2
+    Date: 2025
+    AI usage: Written manually, AI comments and reorganisation
+-->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Standard HTML5 document setup with French language -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Poste - Accueil</title>
+    
+    <!-- Google Fonts for enhanced typography -->
+     <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
+    
+    <!-- Page title and branding -->
+    <title>Redboot</title>
+    
+    <!-- Stylesheets and favicon -->
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="icon" type="image/png" href="../IMG/redboot_small.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="lp-header">
+    <!-- 
+        HEADER SECTION
+        Contains branding, navigation, and user interface controls
+        Includes dark mode toggle, user type selection, and login functionality
+    -->
+    <header class="lp-header">   
+        <!-- Top header bar with logo, controls, and user actions -->
         <div class="lp-header-top">
+            <!-- Centered logo and branding section -->
             <div class="lp-header-center">
-                <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
-                <h1 class="lp-title">Redboot</h1>
+                <a href="index.html" class="logo-link">
+                    <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
+                    <h1 class="lp-title">Redboot</h1>
+                </a>
             </div>
             
+            <!-- Right-side header actions and controls -->
             <div class="lp-header-actions">
-                <!-- Dark Mode Toggle -->
+                <!-- Dark Mode Toggle Switch -->
                 <div class="dark-mode-toggle">
                     <span class="dark-mode-label">☀️</span>
                     <label class="switch">
@@ -28,7 +60,8 @@
                     <span class="dark-mode-label">🌙</span>
                 </div>
                 
-                <!-- Site Selection Dropdown -->
+                <!-- User Type Selection Dropdown -->
+                <!-- Allows switching between Client, Shop, and Delivery interfaces -->
                 <div class="lp-site-select">
                     <span>Vous êtes? : </span>
                     <button class="lp-dropdown" onclick="toggleSiteModal()">
@@ -36,19 +69,21 @@
                         <span class="dropdown-arrow">▼</span>
                     </button>
                     
-                    <!-- Site Selection Modal -->
+                    <!-- Modal for site selection -->
                     <div id="siteModal" class="site-modal" onclick="closeSiteModal()">
                         <div class="site-modal-content" onclick="event.stopPropagation()">
                             <div class="site-options">
+                                <!-- Client option (default selected) -->
                                 <div class="site-option selected" onclick="selectSite('client')">
                                     <div class="site-icon">👤</div>
                                     <h3>Client</h3>
                                     <div class="checkmark">✓</div>
                                 </div>
+                                <!-- Shop/Merchant option -->
                                 <div class="site-option" onclick="selectSite('magasin')">
-                                    <div class="site-icon">🏪</div>
-                                    <h3>Magasin</h3>
+                                    <div class="site-icon">🏪</div>                                    <h3>Magasin</h3>
                                 </div>
+                                <!-- Delivery personnel option -->
                                 <div class="site-option" onclick="selectSite('livreur')">
                                     <div class="site-icon">🚚</div>
                                     <h3>Livreur</h3>
@@ -58,7 +93,7 @@
                     </div>
                 </div>
                 
-                <!-- Login Button -->
+                <!-- User Authentication/Login Button -->
                 <div class="lp-login-container">
                     <button class="lp-btn lp-btn-icon" title="Se connecter">👤</button>
                     <span class="lp-login-text">SE CONNECTER</span>
@@ -66,36 +101,50 @@
             </div>
         </div>
         
-        <!-- Navigation Menu -->
+        <!-- Main Navigation Menu -->
+        <!-- Provides access to core application features -->
         <nav class="lp-nav">
             <ul>
-                <li>Le courrier</li>
-                <li>Le colis</li>
-                <li>Le transfert de courrier</li>
-                <li>Les services</li>
-                <li>Tous nos produits</li>
-                <li class="lp-nav-mobile">Téléphonie mobile</li>
+                <!-- Package tracking functionality -->
+                <li><a href="suivre_colis.html">Suivre un colis</a></li>
+                <!-- Package sending/creation functionality -->
+                <li><a href="envoyer_colis.html">Envoyer un colis</a></li>
+                <!-- Package modification functionality -->
+                <li><a href="modifier_envoi.html">Modifier votre envoi</a></li>
             </ul>
+            <!-- Contact information -->
             <div class="lp-mail">
                 <a href="mailto:contact@redboot.duck">📧contact@redboot.duck</a>
             </div>
-        </nav>    </header>
-    
+        </nav>
+    </header>    
+    <!-- 
+        MAIN CONTENT SECTION
+        Contains promotional content and primary user interface elements
+    -->
     <main>
-        <!-- Promotional Cards Section -->
+        <!-- 
+            PROMOTIONAL CARDS SECTION
+            Highlights key services and features of Redboot
+        -->
         <section class="lp-promos">
+            <!-- Express 24h delivery service promotion -->
             <div class="lp-promo">
                 <h3>LIVRAISON EXPRESS 24H</h3>
                 <p>Besoin d'envoyer un colis en urgence ? Notre service express garantit une livraison en 24h partout en France métropolitaine.</p>
                 <a href="#">Commander maintenant →</a>
                 <img src="../IMG/fast_mail.png" alt="Livraison Express" class="lp-promo-img">
             </div>
+            
+            <!-- Real-time tracking service promotion -->
             <div class="lp-promo">
                 <h3>SUIVI EN TEMPS RÉEL</h3>
                 <p>Suivez vos colis en temps réel.<br> Recevez des notifications à chaque <br>étape de la livraison.</p>
                 <a href="#">Découvrir le service →</a>
                 <img src="../IMG/redboot_magnifying_glass.png" alt="Suivi GPS" class="lp-promo-img">
             </div>
+            
+            <!-- Eco-friendly delivery service promotion -->
             <div class="lp-promo">
                 <h3>ÉCOLOGIQUE & RESPONSABLE</h3>
                 <p>Nos véhicules électriques et nos emballages recyclables réduisent votre empreinte <br>carbone. Livraison verte garantie.</p>
@@ -104,26 +153,37 @@
             </div>
         </section>
         
-        <!-- Package Tracking Section -->
+        <!-- 
+            PACKAGE TRACKING SECTION
+            Primary interface for package tracking functionality
+            Provides quick access to track packages without navigation
+        -->
         <section class="lp-track">
             <h2>Suivre un courrier ou un colis :</h2>
+            <!-- Quick tracking form -->
             <div class="lp-track-form">
                 <input type="text" placeholder="Renseignez votre ou vos numéros de suivi">
                 <button>Suivre votre envoi</button>
             </div>
+            
+            <!-- Additional service shortcuts -->
             <div class="lp-track-actions">
+                <!-- Post office locator -->
                 <div>
                     <img src="../IMG/post_office.png" alt="Trouver bureau de poste">
                     <span>Trouver votre bureau de poste</span>
                 </div>
+                <!-- Address change service -->
                 <div>
                     <img src="../IMG/mailbox.png" alt="Changer adresse">
                     <span>Changer l'adresse de livraison</span>
                 </div>
+                <!-- Delivery date modification -->
                 <div>
                     <img src="../IMG/clock.png" alt="Changer date">
                     <span>Changer la date de livraison</span>
                 </div>
+                <!-- Customer support access -->
                 <div>
                     <img src="../IMG/support.png" alt="Support client">
                     <span>Contacter le service client</span>
@@ -132,7 +192,7 @@
         </section>
     </main>
     
-    <!-- External JavaScript -->
+    <!-- External JavaScript for interactive functionality -->
     <script src="../JS/index.js"></script>
 </body>
 </html>

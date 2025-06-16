@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">
-    <title>Example Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap" rel="stylesheet">    <title>Suivre un colis - Redboot</title>
     <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/track_package.css">
     <link rel="icon" type="image/png" href="../IMG/redboot_small.png">
 </head>
 <body>
-    <header class="lp-header">
-        <div class="lp-header-top">
+    <header class="lp-header">        <div class="lp-header-top">
             <div class="lp-header-center">
-                <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
-                <h1 class="lp-title">Redboot</h1>
+                <a href="index.html" class="logo-link">
+                    <img src="../IMG/redboot_small_right.png" alt="La Poste Logo" class="lp-logo">
+                    <h1 class="lp-title">Redboot</h1>
+                </a>
             </div>
             
             <div class="lp-header-actions">
@@ -75,12 +76,200 @@
             <div class="lp-mail">
                 <a href="mailto:contact@redboot.duck">📧contact@redboot.duck</a>
             </div>
-        </nav></header>
-      <main>
-        <!-- Content sections would go here -->
+        </nav></header>     <main>
+        <div class="tracking-container">
+            <div class="tracking-header">
+                <h2>Suivre votre colis</h2>
+                <p>Entrez votre numéro de suivi pour obtenir les informations de votre colis</p>
+            </div>
+            
+            <div class="tracking-form-container">
+                <form id="trackingForm" class="tracking-form">
+                    <div class="input-group">
+                        <input type="text" 
+                               id="trackingNumber" 
+                               name="trackingNumber" 
+                               placeholder="Entrez votre numéro de suivi" 
+                               required
+                               maxlength="20">                        <button type="submit" class="track-btn">
+                            🔍 Suivre
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <div class="spinner"></div>
+                <p>Recherche en cours...</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <div class="error-icon">⚠️</div>
+                <p id="errorText"></p>
+            </div>
+            
+            <div id="trackingResults" class="tracking-results" style="display: none;">
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Informations du colis</h3>
+                        <div class="tracking-number-display">
+                            <span class="label">Numéro de suivi:</span>
+                            <span id="displayTrackingNumber" class="tracking-number"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="package-details-grid">
+                        <div class="detail-section">
+                            <h4>📦 Détails du colis</h4>                            <p><strong>Poids:</strong> <span id="packageWeight"></span></p>
+                            <p><strong>Dimensions:</strong> <span id="packageDimensions"></span></p>
+                            <p><strong>Volume:</strong> <span id="packageVolume"></span></p>
+                            <p><strong>Valeur déclarée:</strong> <span id="packageValue"></span></p>
+                            <p><strong>Prioritaire:</strong> <span id="packagePriority"></span></p>
+                            <p><strong>Fragile:</strong> <span id="packageFragile"></span></p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>📤 Expéditeur</h4>
+                            <p><strong>Nom:</strong> <span id="senderName"></span></p>
+                            <p><strong>Adresse:</strong> <span id="senderAddress"></span></p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>📥 Destinataire</h4>
+                            <p><strong>Nom:</strong> <span id="recipientName"></span></p>
+                            <p><strong>Adresse:</strong> <span id="recipientAddress"></span></p>                        </div>
+                          <div id="etatColis" class="detail-section package-status-section">
+                            <h4>📍 État du colis</h4>
+                            
+                            <!-- Current Status Display -->
+                            <div class="current-status-enhanced">
+                                <div class="status-info">
+                                    <div class="status-icon-large" id="currentStatusIcon">📦</div>
+                                    <div class="status-details">
+                                        <h5 id="currentStatusName">Chargement...</h5>
+                                        <p id="currentStatusDescription">Récupération des informations...</p>
+                                    </div>
+                                </div>
+                                <div class="status-timestamp">
+                                    <div>Mis à jour le</div>
+                                    <div id="statusUpdateTime">--</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Bar -->
+                            <div class="status-progress-container">
+                                <div class="progress-title">
+                                    🗺️ Suivi du parcours
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-line"></div>
+                                    <div class="progress-line-active" id="progressLineActive"></div>
+                                    
+                                    <div class="progress-step" data-status="CREATED">
+                                        <div class="progress-circle" id="step-CREATED">
+                                            <span class="status-icon">📝</span>
+                                        </div>
+                                        <div class="progress-label">Créé</div>
+                                        <div class="progress-timestamp" id="time-CREATED"></div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="PICKED_UP">
+                                        <div class="progress-circle" id="step-PICKED_UP">
+                                            <span class="status-icon">📤</span>
+                                        </div>
+                                        <div class="progress-label">Récupéré</div>
+                                        <div class="progress-timestamp" id="time-PICKED_UP"></div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="IN_TRANSIT">
+                                        <div class="progress-circle" id="step-IN_TRANSIT">
+                                            <span class="status-icon">🚛</span>
+                                        </div>
+                                        <div class="progress-label">En transit</div>
+                                        <div class="progress-timestamp" id="time-IN_TRANSIT"></div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="ARRIVED_HUB">
+                                        <div class="progress-circle" id="step-ARRIVED_HUB">
+                                            <span class="status-icon">🏢</span>
+                                        </div>
+                                        <div class="progress-label">Au centre</div>
+                                        <div class="progress-timestamp" id="time-ARRIVED_HUB"></div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="OUT_DELIVERY">
+                                        <div class="progress-circle" id="step-OUT_DELIVERY">
+                                            <span class="status-icon">🚚</span>
+                                        </div>
+                                        <div class="progress-label">En livraison</div>
+                                        <div class="progress-timestamp" id="time-OUT_DELIVERY"></div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="DELIVERED">
+                                        <div class="progress-circle" id="step-DELIVERED">
+                                            <span class="status-icon">✅</span>
+                                        </div>
+                                        <div class="progress-label">Livré</div>
+                                        <div class="progress-timestamp" id="time-DELIVERED"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Special Status Indicators -->
+                                <div id="specialStatusIndicators" style="display: none;">
+                                    <div class="progress-step" data-status="DELAYED">
+                                        <div class="progress-circle delayed" id="step-DELAYED">
+                                            <span class="status-icon">⏰</span>
+                                        </div>
+                                        <div class="progress-label">Retardé</div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="ON_HOLD">
+                                        <div class="progress-circle delayed" id="step-ON_HOLD">
+                                            <span class="status-icon">⏸️</span>
+                                        </div>
+                                        <div class="progress-label">En attente</div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="FAILED">
+                                        <div class="progress-circle failed" id="step-FAILED">
+                                            <span class="status-icon">❌</span>
+                                        </div>
+                                        <div class="progress-label">Échec</div>
+                                    </div>
+                                    
+                                    <div class="progress-step" data-status="RETURNED">
+                                        <div class="progress-circle failed" id="step-RETURNED">
+                                            <span class="status-icon">↩️</span>
+                                        </div>
+                                        <div class="progress-label">Retourné</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p><strong>Bureau actuel:</strong> <span id="currentOffice"></span></p>
+                            <p><strong>Date de création:</strong> <span id="createdAt"></span></p>
+                            <p><strong>Dernière mise à jour:</strong> <span id="updatedAt"></span></p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>🚚 Livraison</h4>
+                            <p><strong>Livraison estimée:</strong> <span id="estimatedDelivery"></span></p>
+                            <p><strong>Livraison réelle:</strong> <span id="actualDelivery"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div id="trackingHistory" class="tracking-history" style="display: none;">
+                        <h4>📋 Historique de suivi</h4>
+                        <div id="historyTimeline" class="history-timeline">
+                            <!-- History items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    
-    <!-- External JavaScript -->
+      <!-- External JavaScript -->
     <script src="../JS/index.js"></script>
+    <script src="../JS/track_package.js"></script>
 </body>
 </html>
