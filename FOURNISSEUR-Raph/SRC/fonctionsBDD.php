@@ -111,7 +111,7 @@ function enregistreColi($itemName, $destinationAddress, $deliveryDate, $clientNa
             ':recipient_client_id' => $clientId,
             ':onpackage_destination_address' => $destinationAddress,
             ':estimated_delivery_date' => $deliveryDate,
-            ':trackitracking_numberng' => $trackingNumber,
+            ':tracking_number' => $trackingNumber,
             ':current_status_id' => 1
         ]);
         
