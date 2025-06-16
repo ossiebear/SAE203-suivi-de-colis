@@ -84,9 +84,12 @@ function enregistreMagasin($magasinName, $parentOffice, $category_id, $ownerID, 
 function enregistreColi($itemName, $senderAddress, $destinationAddress, $deliveryDate, $senderName, $clientName, $clientFirstname, $connex) {
     try {
         // Vérifier si le client existe
-        $sqlCheckClient = "SELECT id FROM clients WHERE first_name = :first_name AND last_name = :last_name";
+        $sqlCheckClient = "SELECT id FROM clients WHERE first_name ILIKE :first_name AND last_name ILIKE :last_name";
         $resCheck = $connex->prepare($sqlCheckClient);
-        $resCheck->execute([':first_name' => $clientFirstname, ':last_name' => $clientName]);
+        $resCheck->execute([
+            ':first_name' => '%' . $clientFirstname . '%',
+            ':last_name' => '%' . $clientName . '%'
+        ]);
         $clientId = $resCheck->fetchColumn();
         
         if (!$clientId) {
@@ -106,7 +109,7 @@ function enregistreColi($itemName, $senderAddress, $destinationAddress, $deliver
                 VALUES (:onpackage_recipient_name, :onpackage_sender_name, :onpackage_sender_address, :recipient_client_id, :onpackage_destination_address, :estimated_delivery_date, :tracking_number, :current_status_id) RETURNING id";
         $res = $connex->prepare($sql);
         $res->execute([
-            ':onpackage_recipient_name' => $clientFirstname . ' ' . $clientName,
+            ':onpackage_recipient_name' => $itemName,
             ':onpackage_sender_address' => $senderAddress,
             ':onpackage_sender_name' => $senderName,
             ':recipient_client_id' => $clientId,
